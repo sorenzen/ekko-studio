@@ -5,11 +5,10 @@ import { NTabPane, NTabs } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import AppConnectionsPanel from '@/components/hermes/connections/AppConnectionsPanel.vue'
-import McuDevicesPanel from '@/components/hermes/connections/McuDevicesPanel.vue'
 import RemoteDevicesPanel from '@/components/hermes/connections/RemoteDevicesPanel.vue'
 import { desktopBridge } from '@/utils/desktop-bridge'
 
-type ConnectionTab = 'app' | 'mcu' | 'remote'
+type ConnectionTab = 'app' | 'remote'
 
 const route = useRoute()
 const router = useRouter()
@@ -18,7 +17,6 @@ const hasRemoteDevices = desktopBridge()?.isDesktop === true && !!desktopBridge(
 
 function normalizeTab(value: unknown): ConnectionTab {
   if (value === 'remote' && hasRemoteDevices) return value
-  if (value === 'mcu') return value
   return 'app'
 }
 
@@ -63,9 +61,6 @@ function updateTab(value: string | number) {
     >
       <NTabPane name="app" :tab="t('connections.tabs.app')" display-directive="if">
         <AppConnectionsPanel />
-      </NTabPane>
-      <NTabPane name="mcu" :tab="t('connections.tabs.mcu')" display-directive="if">
-        <McuDevicesPanel />
       </NTabPane>
       <NTabPane v-if="hasRemoteDevices" name="remote" :tab="t('remoteDevices.title')" display-directive="if">
         <RemoteDevicesPanel />

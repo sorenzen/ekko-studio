@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { deploymentUrl } from '@/utils/deployment-url'
 import { usePageLoadingTask } from '@/composables/usePageLoading'
 import { computed, h, onMounted, onUnmounted, ref, watch } from 'vue'
 import { NSpin, NAlert, NButton, NDataTable, NEmpty, NModal, NPopconfirm, NSwitch, NTabPane, NTabs, NTag, useMessage } from 'naive-ui'
@@ -23,53 +22,28 @@ import {
   updateAppRelayRoute,
   type AppRelayRoute,
 } from '@/api/studio/app-relay'
-import { fetchStudioVersionManifest, type AppAccessMode, type StudioMobileRelease } from '@/api/studio/versions'
 import SocialMessagesView from '@/views/social-messages/SocialMessagesView.vue'
 
-type AppPanelView = 'list' | 'download' | 'messages'
+type AppPanelView = 'list' | 'messages'
 
 function normalizePanelView(value: unknown): AppPanelView {
   if (value === 'list' || value === 'messages') return value
-  return 'download'
+  return 'list'
 }
 
 const DISMISSED_ACCESS_FAILURE_KEY = 'hermes:app-access-failure-dismissed-at'
-const APP_ACCESS_PURCHASE_URL = 'https://ekkostudio.xyz/pricing/'
-const PURCHASE_REQUIRED_FAILURE_CODES = new Set([
-  'cloud_subscription_required',
-  'paid_account_required',
-  'app_access_expired',
-])
-const DEFAULT_MOBILE_RELEASE: StudioMobileRelease = {
-  version: '1.0.0',
-  channels: {
-    androidApk: {
-      version: '1.0.0',
-      githubUrl: 'https://github.com/EKKOLearnAI/ekko-studio/releases/download/v1.0.0/Ekko Studio.apk',
-      cloudflareUrl: 'https://download.ekkolearnai.com/v1.0.0/Ekko Studio.apk',
-      online: true,
-    },
-    googlePlay: { version: '1.0.0', url: '', online: false },
-    apple: { version: '1.0.0', testFlightUrl: '', appStoreUrl: '', online: false },
-    harmony: { url: '', online: false },
-  },
-}
-
 const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const message = useMessage()
 const loading = ref(false)
 const panelView = ref<AppPanelView>(normalizePanelView(route.query.view))
-const downloadSource = ref<'github' | 'cloudflare'>('cloudflare')
-const mobileRelease = ref<StudioMobileRelease>(DEFAULT_MOBILE_RELEASE)
 const connections = ref<AppConnection[]>([])
 const accessFailure = ref<AppConnectionAccessFailure | null>(null)
 const dismissedAccessFailureAt = ref(readDismissedAccessFailureAt())
 const showScanModal = ref(false)
 const connectionTab = ref<'lan' | 'cloud'>('lan')
 const cloudRelayRoute = ref<AppRelayRoute>('official')
-const appAccessMode = ref<AppAccessMode | null>(null)
 const cloudRelayRouteLoading = ref(false)
 const authorizationLoading = ref<Record<'lan' | 'cloud', boolean>>({ lan: false, cloud: false })
 const deletingConnectionId = ref<number | null>(null)
@@ -78,12 +52,6 @@ let pushPreferenceRevision = 0
 const lanAuthorization = ref<LanAppAuthorizationResponse | null>(null)
 const cloudAuthorization = ref<CloudAppAuthorizationResponse | null>(null)
 const qrCodeDataUrls = ref<Record<'lan' | 'cloud', string>>({ lan: '', cloud: '' })
-type DownloadQrChannel = 'androidApk' | 'googlePlay' | 'apple'
-const downloadQrCodeDataUrls = ref<Record<DownloadQrChannel, string>>({
-  androidApk: '',
-  googlePlay: '',
-  apple: '',
-})
 const currentTimestamp = ref(Math.floor(Date.now() / 1000))
 let countdownTimer: ReturnType<typeof setInterval> | null = null
 let connectionPollTimer: ReturnType<typeof setInterval> | null = null
@@ -96,40 +64,6 @@ const APP_RELAY_ROUTE_OPTIONS = [
   { value: 'cloudflare' as const, label: 'connections.app.cloudflareRoute' },
 ]
 
-const androidVersionLabel = computed(() => formatMobileVersion(mobileRelease.value.channels.androidApk.version))
-const googlePlayVersionLabel = computed(() => formatMobileVersion(mobileRelease.value.channels.googlePlay.version))
-const iosVersionLabel = computed(() => formatMobileVersion(mobileRelease.value.channels.apple.version))
-const appPurchaseEnabled = computed(() => appAccessMode.value === 'paid')
-const androidDownloadUrl = computed(() => {
-  const channel = mobileRelease.value.channels.androidApk
-  const selectedUrl = downloadSource.value === 'cloudflare' ? channel.cloudflareUrl : channel.githubUrl
-  return selectedUrl || channel.cloudflareUrl || channel.githubUrl
-})
-const googlePlayDownloadUrl = computed(() => {
-  const channel = mobileRelease.value.channels.googlePlay
-  return channel.url
-})
-const appleUsesOfficialRelease = computed(() => Boolean(
-  mobileRelease.value.channels.apple.online
-  && mobileRelease.value.channels.apple.appStoreUrl,
-))
-const appleDownloadUrl = computed(() => {
-  const channel = mobileRelease.value.channels.apple
-  return appleUsesOfficialRelease.value
-    ? channel.appStoreUrl
-    : channel.testFlightUrl || channel.appStoreUrl
-})
-const appleReleaseLabel = computed(() => {
-  const channel = mobileRelease.value.channels.apple
-  if (appleUsesOfficialRelease.value && channel.appStoreUrl) return 'App Store'
-  if (channel.testFlightUrl) return 'TestFlight'
-  if (channel.appStoreUrl) return 'App Store'
-  return t('connections.app.iosPending')
-})
-
-function formatMobileVersion(version: string): string {
-  return version ? `v${version.replace(/^v/i, '')}` : ''
-}
 const activeAuthorization = computed(() => connectionTab.value === 'lan'
   ? lanAuthorization.value
   : cloudAuthorization.value)
@@ -187,15 +121,6 @@ const accessFailureTime = computed(() => {
     timeStyle: 'medium',
   }).format(new Date(occurredAt))
 })
-const accessFailureRequiresPurchase = computed(() => {
-  const failure = accessFailure.value
-  if (!failure) return false
-  if (PURCHASE_REQUIRED_FAILURE_CODES.has(failure.code)) return true
-  return failure.plan === 'paid'
-    && failure.code === 'app_entitlement_expired'
-    && failure.tokenTtlSeconds === 0
-})
-
 const columns = computed<DataTableColumns<AppConnection>>(() => [
   {
     title: t('connections.app.deviceName'),
@@ -461,53 +386,6 @@ function ensureCurrentAuthorization(type: 'lan' | 'cloud', verifyRelaySession = 
   }
 }
 
-async function loadMobileRelease() {
-  try {
-    const manifest = await fetchStudioVersionManifest()
-    appAccessMode.value = manifest.accessMode || null
-    mobileRelease.value = manifest.mobile
-    const android = manifest.mobile.channels.androidApk
-    if (!android.cloudflareUrl && android.githubUrl) downloadSource.value = 'github'
-    else if (!android.githubUrl && android.cloudflareUrl) downloadSource.value = 'cloudflare'
-  } catch {
-    appAccessMode.value = null
-    mobileRelease.value = DEFAULT_MOBILE_RELEASE
-  }
-}
-
-async function generateDownloadQrCode(channel: DownloadQrChannel, requestedUrl: string) {
-  if (!requestedUrl) {
-    downloadQrCodeDataUrls.value = { ...downloadQrCodeDataUrls.value, [channel]: '' }
-    return
-  }
-  try {
-    const dataUrl = await QRCode.toDataURL(requestedUrl, {
-      width: 220,
-      margin: 2,
-      errorCorrectionLevel: 'M',
-      color: { dark: '#111111', light: '#ffffff' },
-    })
-    if (requestedUrl === downloadUrlFor(channel)) {
-      downloadQrCodeDataUrls.value = { ...downloadQrCodeDataUrls.value, [channel]: dataUrl }
-    }
-  } catch {
-    if (requestedUrl === downloadUrlFor(channel)) {
-      downloadQrCodeDataUrls.value = { ...downloadQrCodeDataUrls.value, [channel]: '' }
-    }
-  }
-}
-
-function downloadUrlFor(channel: DownloadQrChannel): string {
-  if (channel === 'androidApk') return androidDownloadUrl.value
-  if (channel === 'googlePlay') return googlePlayDownloadUrl.value
-  return appleDownloadUrl.value
-}
-
-function generateDownloadQrCodes(): void {
-  const channels: DownloadQrChannel[] = ['androidApk', 'googlePlay', 'apple']
-  for (const channel of channels) void generateDownloadQrCode(channel, downloadUrlFor(channel))
-}
-
 async function updatePushPreference(connection: AppConnection, enabled: boolean) {
   if (updatingPushIds.value.has(connection.id)) return
   updatingPushIds.value.add(connection.id)
@@ -551,7 +429,7 @@ function updatePanelView(view: AppPanelView): void {
   void router.replace({
     query: {
       ...route.query,
-      view: view === 'download' ? undefined : view,
+      view: view === 'list' ? undefined : view,
     },
   })
 }
@@ -567,18 +445,12 @@ watch(connectionTab, (type) => {
   ensureCurrentAuthorization(type, type === 'cloud')
 })
 
-watch(
-  [androidDownloadUrl, googlePlayDownloadUrl, appleDownloadUrl],
-  generateDownloadQrCodes,
-)
-
 const initializing = ref(true)
 usePageLoadingTask(() => initializing.value)
 
 onMounted(() => {
-  void Promise.allSettled([loadConnections(), loadCloudRelayRoute(), loadMobileRelease()])
+  void Promise.allSettled([loadConnections(), loadCloudRelayRoute()])
     .finally(() => { initializing.value = false })
-  generateDownloadQrCodes()
   countdownTimer = setInterval(() => {
     currentTimestamp.value = Math.floor(Date.now() / 1000)
   }, 1000)
@@ -612,15 +484,6 @@ onUnmounted(() => {
           >
             {{ t('connections.app.viewList') }}
           </button>
-          <button
-            type="button"
-            class="view-switch-button"
-            :class="{ 'view-switch-button--active': panelView === 'download' }"
-            :aria-selected="panelView === 'download'"
-            @click="updatePanelView('download')"
-          >
-            {{ t('connections.app.viewDownload') }}
-          </button>
         </div>
         <NButton size="small" type="primary" @click="openScanModal">
           {{ t('connections.app.scanToAdd') }}
@@ -644,18 +507,6 @@ onUnmounted(() => {
           {{ t('connections.app.accessFailureDeviceName', { deviceName: accessFailure.deviceName }) }}
         </span>
         <span>{{ t('connections.app.accessFailureTime', { time: accessFailureTime }) }}</span>
-      </div>
-      <div v-if="accessFailureRequiresPurchase" class="app-access-failure__actions">
-        <NButton
-          tag="a"
-          :href="APP_ACCESS_PURCHASE_URL"
-          target="_blank"
-          rel="noopener noreferrer"
-          size="small"
-          type="primary"
-        >
-          {{ t('connections.app.purchaseAccess') }}
-        </NButton>
       </div>
     </NAlert>
 
@@ -700,194 +551,6 @@ onUnmounted(() => {
         </NDataTable>
       </div>
     </template>
-
-    <div v-else-if="panelView === 'download'" class="app-downloads">
-      <div class="app-download-layout">
-        <section class="app-download-hero" data-theme-surface="card">
-          <div class="app-download-intro">
-            <div class="app-download-brand">
-              <img class="app-download-logo" :src="deploymentUrl('/logo.png')" alt="">
-              <div>
-                <span>Ekko Studio Mobile</span>
-                <h3>{{ t('connections.app.downloadTitle') }}</h3>
-              </div>
-            </div>
-            <p>{{ t(appPurchaseEnabled ? 'connections.app.downloadPaidDescription' : 'connections.app.downloadDescription') }}</p>
-            <NButton
-              v-if="appPurchaseEnabled"
-              class="app-download-purchase"
-              tag="a"
-              :href="APP_ACCESS_PURCHASE_URL"
-              target="_blank"
-              rel="noopener noreferrer"
-              size="small"
-              type="primary"
-            >
-              {{ t('connections.app.purchaseAccess') }}
-            </NButton>
-            <div class="app-download-meta">
-              <span>APK {{ androidVersionLabel }}</span>
-              <span>Google Play {{ googlePlayVersionLabel }}</span>
-              <span>iOS {{ iosVersionLabel }}</span>
-            </div>
-          </div>
-
-        </section>
-
-        <div class="app-platform-grid">
-          <article
-            class="app-platform-card app-platform-card--apk"
-            data-theme-surface="card"
-            :class="androidDownloadUrl ? 'app-platform-card--available' : 'app-platform-card--pending'"
-          >
-            <div class="app-platform-card-header">
-              <div class="app-platform-icon" aria-hidden="true">
-                <svg data-platform-icon="android-apk" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.2 8.2 5.7 5.6a.7.7 0 0 1 1.2-.7l1.6 2.7a9.7 9.7 0 0 1 7 0l1.6-2.7a.7.7 0 0 1 1.2.7l-1.5 2.6A7.2 7.2 0 0 1 20 13H4a7.2 7.2 0 0 1 3.2-4.8ZM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM4 14h16v5a2 2 0 0 1-2 2h-1v1.3a.7.7 0 0 1-1.4 0V21H8.4v1.3a.7.7 0 0 1-1.4 0V21H6a2 2 0 0 1-2-2v-5Z" />
-                </svg>
-              </div>
-              <NTag v-if="androidDownloadUrl && !mobileRelease.channels.androidApk.online" class="download-test-status" size="small" type="warning" :bordered="false">
-                {{ t('connections.app.testVersion') }}
-              </NTag>
-              <div v-if="androidDownloadUrl" class="download-tag-qr">
-                <img v-if="downloadQrCodeDataUrls.androidApk" :src="downloadQrCodeDataUrls.androidApk" :alt="t('connections.app.downloadScan')">
-                <NSpin v-else size="small" />
-              </div>
-              <NTag v-else size="small" :bordered="false">{{ t('connections.app.notReleased') }}</NTag>
-            </div>
-            <div class="app-platform-copy">
-              <h4>Android APK</h4>
-              <p>Android</p>
-            </div>
-            <div class="app-platform-download-controls">
-              <div class="view-switch download-source-switch" role="tablist" aria-label="GitHub / Cloudflare" data-theme-surface="input">
-                <button
-                  type="button"
-                  role="tab"
-                  class="view-switch-button"
-                  :class="{ 'view-switch-button--active': downloadSource === 'github' }"
-                  :aria-selected="downloadSource === 'github'"
-                  @click="downloadSource = 'github'"
-                >GitHub</button>
-                <button
-                  type="button"
-                  role="tab"
-                  class="view-switch-button"
-                  :class="{ 'view-switch-button--active': downloadSource === 'cloudflare' }"
-                  :aria-selected="downloadSource === 'cloudflare'"
-                  @click="downloadSource = 'cloudflare'"
-                >Cloudflare</button>
-              </div>
-              <NButton
-                v-if="androidDownloadUrl"
-                class="app-platform-action"
-                tag="a"
-                type="primary"
-                :href="androidDownloadUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >{{ t('connections.app.downloadApk') }}</NButton>
-              <NButton v-else class="app-platform-action" disabled>{{ t('connections.app.notReleased') }}</NButton>
-            </div>
-          </article>
-
-          <article
-            class="app-platform-card"
-            data-theme-surface="card"
-            :class="googlePlayDownloadUrl ? 'app-platform-card--available' : 'app-platform-card--pending'"
-          >
-            <div class="app-platform-card-header">
-              <div class="app-platform-icon" aria-hidden="true">
-                <svg data-platform-icon="google-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85A1.5 1.5 0 0 1 3 20.5Zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27Zm3.35-4.31c.37.22.59.63.59 1.19s-.22.97-.57 1.18l-2.29 1.32-2.5-2.5 2.5-2.5 2.27 1.31ZM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49Z" />
-                </svg>
-              </div>
-              <NTag v-if="googlePlayDownloadUrl && !mobileRelease.channels.googlePlay.online" class="download-test-status" size="small" type="warning" :bordered="false">
-                {{ t('connections.app.testVersion') }}
-              </NTag>
-              <div v-if="googlePlayDownloadUrl" class="download-tag-qr">
-                <img v-if="downloadQrCodeDataUrls.googlePlay" :src="downloadQrCodeDataUrls.googlePlay" :alt="t('connections.app.downloadScan')">
-                <NSpin v-else size="small" />
-              </div>
-              <NTag v-else size="small" :bordered="false">{{ t('connections.app.notReleased') }}</NTag>
-            </div>
-            <div class="app-platform-copy">
-              <h4>Google Play</h4>
-              <p>Android</p>
-            </div>
-            <NButton
-              v-if="googlePlayDownloadUrl"
-              class="app-platform-action"
-              tag="a"
-              type="primary"
-              :href="mobileRelease.channels.googlePlay.url"
-              target="_blank"
-              rel="noopener noreferrer"
-            >Google Play</NButton>
-            <NButton v-else class="app-platform-action" disabled>{{ t('connections.app.notReleased') }}</NButton>
-          </article>
-
-          <article
-            class="app-platform-card"
-            data-theme-surface="card"
-            :class="appleDownloadUrl ? 'app-platform-card--available' : 'app-platform-card--pending'"
-          >
-            <div class="app-platform-card-header">
-              <div class="app-platform-icon" aria-hidden="true">
-                <svg data-platform-icon="apple" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16.8 12.7c0-2.4 2-3.6 2.1-3.7a4.5 4.5 0 0 0-3.5-1.9c-1.5-.2-2.9.9-3.6.9-.7 0-1.8-.9-3-.9A4.8 4.8 0 0 0 4.7 9.6c-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3.1 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4a10.7 10.7 0 0 0 1.4-2.9 4.2 4.2 0 0 1-3-3.8ZM14.4 5.5A4.2 4.2 0 0 0 15.5 2a4.3 4.3 0 0 0-3 1.7 4 4 0 0 0-1.1 3.4 3.6 3.6 0 0 0 3-1.6Z" />
-                </svg>
-              </div>
-              <NTag v-if="appleDownloadUrl && !mobileRelease.channels.apple.online" class="download-test-status" size="small" type="warning" :bordered="false">
-                {{ t('connections.app.testVersion') }}
-              </NTag>
-              <div v-if="appleDownloadUrl" class="download-tag-qr">
-                <img v-if="downloadQrCodeDataUrls.apple" :src="downloadQrCodeDataUrls.apple" :alt="t('connections.app.downloadScan')">
-                <NSpin v-else size="small" />
-              </div>
-              <NTag v-else size="small" :bordered="false">{{ t('connections.app.notReleased') }}</NTag>
-            </div>
-            <div class="app-platform-copy">
-              <h4>Apple</h4>
-              <p>{{ appleReleaseLabel }}</p>
-            </div>
-            <div v-if="appleDownloadUrl" class="app-platform-actions">
-              <NButton
-                v-if="appleUsesOfficialRelease"
-                class="app-platform-action"
-                tag="a"
-                type="primary"
-                :href="mobileRelease.channels.apple.appStoreUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >App Store</NButton>
-              <NButton
-                v-if="mobileRelease.channels.apple.testFlightUrl"
-                class="app-platform-action"
-                tag="a"
-                :type="appleUsesOfficialRelease ? 'default' : 'primary'"
-                :secondary="appleUsesOfficialRelease"
-                :href="mobileRelease.channels.apple.testFlightUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >TestFlight</NButton>
-              <NButton
-                v-if="mobileRelease.channels.apple.appStoreUrl && !appleUsesOfficialRelease"
-                class="app-platform-action"
-                tag="a"
-                :type="mobileRelease.channels.apple.testFlightUrl ? 'default' : 'primary'"
-                :secondary="Boolean(mobileRelease.channels.apple.testFlightUrl)"
-                :href="mobileRelease.channels.apple.appStoreUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >App Store</NButton>
-            </div>
-            <NButton v-else class="app-platform-action" disabled>{{ t('connections.app.notReleased') }}</NButton>
-          </article>
-
-        </div>
-      </div>
-    </div>
 
     <SocialMessagesView v-else embedded class="app-message-push" />
   </section>
@@ -1006,7 +669,6 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
-@use '@/styles/promo-hero' as *;
 
 .app-connections-panel {
   height: 100%;
@@ -1209,9 +871,6 @@ onUnmounted(() => {
   gap: calc(14px * var(--spacing-scale, 1));
 }
 
-.app-download-hero {
-  @include promo-hero;
-}
 
 .app-download-intro {
   position: relative;
