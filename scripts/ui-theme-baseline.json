@@ -533,16 +533,6 @@
       "literal-color | <script> | background: #8eac9b": 1,
       "unowned-background | <script> | background: #8eac9b": 1
     },
-    "packages/client/src/components/hermes/connections/AppConnectionsPanel.vue": {
-      "unowned-background | .app-download-meta span | background: $bg-secondary": 1,
-      "unowned-background | .app-platform-icon | background: $bg-secondary": 1,
-      "literal-color | .download-tag-qr | background: #ffffff": 1,
-      "unowned-background | .download-tag-qr | background: #ffffff": 1,
-      "literal-color | .connection-qr | background: #ffffff": 1,
-      "unowned-background | .connection-qr | background: #ffffff": 1,
-      "literal-color | .connection-qr-expired | background: rgba(255, 255, 255, 0.72)": 1,
-      "unowned-background | .connection-qr-expired | background: rgba(255, 255, 255, 0.72)": 1
-    },
     "packages/client/src/components/hermes/files/DocxFilePreview.vue": {
       "literal-color | .docx-stage | background: rgba(127, 127, 127, 0.08)": 1,
       "unowned-background | .docx-stage | background: rgba(127, 127, 127, 0.08)": 1
@@ -940,7 +930,7 @@
       "unowned-background | .runtime-update-note code | background: var(--hover-color)": 1
     },
     "packages/client/src/i18n/locales/ar.ts": {
-      "unowned-background | <script> | background: صورة الخلفية": 1
+      "unowned-background | <script> | background: \u0635\u0648\u0631\u0629 \u0627\u0644\u062e\u0644\u0641\u064a\u0629": 1
     },
     "packages/client/src/i18n/locales/de.ts": {
       "unowned-background | <script> | background: Hintergrundbild": 1
@@ -952,41 +942,41 @@
       "unowned-background | <script> | background: Imagen de fondo": 1
     },
     "packages/client/src/i18n/locales/fr.ts": {
-      "unowned-background | <script> | background: Image d’arrière-plan": 1
+      "unowned-background | <script> | background: Image d\u2019arri\u00e8re-plan": 1
     },
     "packages/client/src/i18n/locales/ja.ts": {
-      "unowned-background | <script> | background: 背景画像": 1
+      "unowned-background | <script> | background: \u80cc\u666f\u753b\u50cf": 1
     },
     "packages/client/src/i18n/locales/ko.ts": {
-      "unowned-background | <script> | background: 배경 이미지": 1
+      "unowned-background | <script> | background: \ubc30\uacbd \uc774\ubbf8\uc9c0": 1
     },
     "packages/client/src/i18n/locales/pt.ts": {
       "unowned-background | <script> | background: Imagem de fundo": 1
     },
     "packages/client/src/i18n/locales/ru.ts": {
-      "unowned-background | <script> | background: Фоновое изображение": 1
+      "unowned-background | <script> | background: \u0424\u043e\u043d\u043e\u0432\u043e\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435": 1
     },
     "packages/client/src/i18n/locales/tr.ts": {
-      "unowned-background | <script> | background: Arka plan görseli": 1
+      "unowned-background | <script> | background: Arka plan g\u00f6rseli": 1
     },
     "packages/client/src/i18n/locales/zh-TW.ts": {
-      "unowned-background | <script> | background: 背景圖片": 1
+      "unowned-background | <script> | background: \u80cc\u666f\u5716\u7247": 1
     },
     "packages/client/src/i18n/locales/zh.ts": {
-      "unowned-background | <script> | background: 背景图片": 1
+      "unowned-background | <script> | background: \u80cc\u666f\u56fe\u7247": 1
     },
     "packages/client/src/i18n/theme-appearance-locales.ts": {
       "unowned-background | <script> | background-color: Background color": 1,
-      "unowned-background | <script> | background-color: 背景颜色": 1,
-      "unowned-background | <script> | background-color: 背景顏色": 1,
-      "unowned-background | <script> | background-color: 背景色": 1,
-      "unowned-background | <script> | background-color: 배경색": 1,
+      "unowned-background | <script> | background-color: \u80cc\u666f\u989c\u8272": 1,
+      "unowned-background | <script> | background-color: \u80cc\u666f\u984f\u8272": 1,
+      "unowned-background | <script> | background-color: \u80cc\u666f\u8272": 1,
+      "unowned-background | <script> | background-color: \ubc30\uacbd\uc0c9": 1,
       "unowned-background | <script> | background-color: Couleur de fond": 1,
       "unowned-background | <script> | background-color: Hintergrundfarbe": 1,
       "unowned-background | <script> | background-color: Color de fondo": 1,
       "unowned-background | <script> | background-color: Cor de fundo": 1,
-      "unowned-background | <script> | background-color: Цвет фона": 1,
-      "unowned-background | <script> | background-color: لون الخلفية": 1,
+      "unowned-background | <script> | background-color: \u0426\u0432\u0435\u0442 \u0444\u043e\u043d\u0430": 1,
+      "unowned-background | <script> | background-color: \u0644\u0648\u0646 \u0627\u0644\u062e\u0644\u0641\u064a\u0629": 1,
       "unowned-background | <script> | background-color: Arka plan rengi": 1
     },
     "packages/client/src/styles/_agent-config-sidebar.scss": {

@@ -12,7 +12,6 @@ import { killOwnedProcessTree } from '../../../infrastructure/process-tree'
 import { transcodeToPcmS16le } from './audio-convert'
 import { SttNoSpeechDetectedError, type SttTranscribeInput, type SttTranscribeResult } from './types'
 
-const DEFAULT_DOWNLOAD_BASE_URL = 'https://download.ekkolearnai.com'
 const DEFAULT_GITHUB_REPO = 'EKKOLearnAI/ekko-studio'
 const MODEL_MANIFEST_FILE = 'model-manifest.json'
 const MODEL_SCHEMA = 1
@@ -281,7 +280,7 @@ export function localSttModelDirectory(): string {
 }
 
 function downloadBaseUrl(): string {
-  return (process.env.HERMES_WEB_UI_DOWNLOAD_BASE_URL || DEFAULT_DOWNLOAD_BASE_URL).trim().replace(/\/$/, '')
+  return (process.env.HERMES_WEB_UI_DOWNLOAD_BASE_URL || '').trim().replace(/\/$/, '')
 }
 
 export function localSttModelAssetUrl(source: LocalSttModelDownloadSource): string {
@@ -289,7 +288,9 @@ export function localSttModelAssetUrl(source: LocalSttModelDownloadSource): stri
     const repo = process.env.HERMES_WEB_UI_DOWNLOAD_GITHUB_REPO?.trim() || DEFAULT_GITHUB_REPO
     return `https://github.com/${repo}/releases/download/${encodeURIComponent(LOCAL_STT_MODEL_RELEASE_TAG)}/${encodeURIComponent(LOCAL_STT_MODEL_ASSET_NAME)}`
   }
-  return `${downloadBaseUrl()}/${encodeURIComponent(LOCAL_STT_MODEL_RELEASE_TAG)}/${encodeURIComponent(LOCAL_STT_MODEL_ASSET_NAME)}`
+  const base = downloadBaseUrl()
+  if (!base) throw new Error('Set HERMES_WEB_UI_DOWNLOAD_BASE_URL to download the local STT model from a mirror. GitHub remains an explicit download choice.')
+  return `${base}/${encodeURIComponent(LOCAL_STT_MODEL_RELEASE_TAG)}/${encodeURIComponent(LOCAL_STT_MODEL_ASSET_NAME)}`
 }
 
 function readManifest(root: string): LocalSttModelManifest | null {

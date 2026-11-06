@@ -280,7 +280,6 @@ export default {
     "conflict": "تغيرت الإعدادات. تم حفظ المسودة؛ قارنها بأحدث إصدار قبل إعادة التحميل.",
     "missingDependency": "ثبّت DSH وpnpm أولًا.",
   },
-  announcements: {"later": "لاحقًا", "details": "عرض التفاصيل", "gotIt": "فهمت"},
   taskPlan: {"title": "خطة المهام", "progress": "اكتمل {completed}/{total}", "pending": "غير مكتمل", "in_progress": "قيد التقدم", "completed": "مكتمل", "running": "قيد التنفيذ", "ended": "انتهى التنفيذ؛ توجد خطوات غير مكتملة", "interrupted": "تمت المقاطعة؛ توجد خطوات غير مكتملة", "failed": "فشل التنفيذ؛ توجد خطوات غير مكتملة"},
   agentAutoUpdate: { label: 'التحديثات التلقائية' },
   ekkoConfig: {
@@ -637,7 +636,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "الحادي عشر المزدوج: رصيد إضافي بنسبة 11.11% عند الشحن، بحد أقصى 1111 من الرصيد الإضافي",
     campaignBadge: "11.11",
     campaignLabel: "الحادي عشر المزدوج",
     title: "بوابة API",
@@ -931,13 +929,11 @@ export default {
     app: {
       subtitle: 'دع التطبيق يتصل بأجهزتك',
       scanToAdd: 'إضافة عبر المسح',
-      purchaseAccess: 'عرض الخطط',
       viewList: 'القائمة',
       viewDownload: 'تنزيل',
       viewMessages: 'إرسال الرسائل',
       downloadTitle: 'Ekko Studio على هاتفك',
       downloadDescription: 'نحن حاليًا في مرحلة اختبار تجريبي مغلق. يلزم رمز تسجيل لإنشاء حساب، وسننشر عددًا محدودًا من الرموز عبر حساباتنا على وسائل التواصل الاجتماعي.',
-      downloadPaidDescription: 'تم إطلاق تطبيق Ekko Studio رسميًا، وهو متاح الآن كمنتج مدفوع. للبدء، انتقل إلى صفحة الأسعار والشراء، واختر الخطة المناسبة، ثم أكمل عملية الشراء.',
       downloadScan: 'امسح بهاتفك',
       downloadScanHint: 'تنزيل Android متاح الآن',
       available: 'متاح',
@@ -972,7 +968,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'انتهت صلاحية الرمز المميز',
-        paidAccountRequired: 'الحساب الحالي غير مدفوع ولا يمكنه استخدام هذه الميزة',
         cloudSubscriptionRequired: 'هذا الحساب لا يملك صلاحية الوصول إلى Ekko Studio Cloud',
         appAccessExpired: 'انتهت صلاحية الوصول للاختبار الداخلي أو الإصدار التجريبي العام',
         required: 'لم يقدّم التطبيق استحقاق وصول',

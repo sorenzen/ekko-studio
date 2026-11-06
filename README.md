@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/EKKOLearnAI/ekko-studio/releases/latest">Download Ekko Studio Desktop</a>
   ·
-  <a href="https://ekkostudio.xyz/#/docs/getting-started">Documentation</a>
+  <a href="https://github.com/sorenzen/ekko-studio">Documentation</a>
   ·
   <code>npm install -g ekko-studio && ekko-studio-web start</code>
 </p>
@@ -336,10 +336,7 @@ Use `ekko-studio cli -h` for Hermes Agent CLI help and
 `api` toolset; choose `browser`, `devices`, `use`, or `plan` to keep the exposed MCP
 surface focused on the current task.
 
-Desktop auto-updates read the latest feed from
-`https://download.ekkolearnai.com/latest` first. If that endpoint is
-unavailable, the updater falls back to
-`https://github.com/EKKOLearnAI/ekko-studio/releases/latest/download`.
+Desktop auto-update checks are off unless `EKKO_STUDIO_UPDATE_FEED_URL` is set to an HTTPS feed directory.
 
 ### npm
 
@@ -354,6 +351,17 @@ package; their global command aliases overlap. To switch, uninstall the old
 package before installing the other. User data remains in `~/.hermes-web-ui`.
 
 Open **http://localhost:8648**
+
+The server listens on `BIND_HOST` (default `0.0.0.0`) and `PORT` (default `8648`). From another device on the same LAN or a mesh VPN, open `http://<this-machine-address>:8648`. Set `BIND_HOST=127.0.0.1` to keep it on loopback. Use the same host in the browser address that you use for the API; CORS allows that host by default.
+
+From a source checkout on macOS Apple Silicon:
+
+```bash
+# Node.js 23 or newer
+npm install
+npm run build
+node bin/hermes-web-ui.mjs start
+```
 
 Requires Node.js **23 or newer**. Ekko Agent is included; to use Hermes Agent, install its runtime on the same machine or use the bundled Desktop/Docker distribution.
 
@@ -439,7 +447,7 @@ These variables configure Ekko Studio, its local Hermes runtime integration, and
 | `HERMES_BRIDGE_TOOLSETS` | profile/default | Toolset override for bridge runs. |
 | `HERMES_BRIDGE_MAX_TURNS` | profile/default | Maximum turn override for bridge runs. |
 | `HERMES_BRIDGE_SUPPRESS_PLATFORM_HINT` | `cli` | Controls bridge platform hint suppression passed to Hermes Agent. |
-| `HERMES_OPENROUTER_APP_REFERER` | `https://ekkostudio.xyz` | OpenRouter attribution referer sent by bridge runs. |
+| `HERMES_OPENROUTER_APP_REFERER` | unset | Optional OpenRouter attribution referer. No attribution headers are sent unless this, `HERMES_OPENROUTER_APP_TITLE`, or `HERMES_OPENROUTER_APP_CATEGORIES` is set. |
 | `HERMES_OPENROUTER_APP_TITLE` | `Ekko Studio` | OpenRouter attribution title sent by bridge runs. |
 | `HERMES_OPENROUTER_APP_CATEGORIES` | `cli-agent,personal-agent` | OpenRouter attribution categories sent by bridge runs. |
 | `HERMES_WEB_UI_MANAGED_GATEWAY` | enabled | Controls Studio-managed Hermes gateway process handling. Set `0`, `false`, `no`, or `off` to use `hermes gateway start` instead. |

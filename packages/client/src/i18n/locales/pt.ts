@@ -280,7 +280,6 @@ export default {
     "conflict": "A configuração mudou. O rascunho foi mantido; compare com a versão atual antes de recarregar.",
     "missingDependency": "Instale DSH e pnpm primeiro.",
   },
-  announcements: {"later": "Mais tarde", "details": "Ver detalhes", "gotIt": "Entendido"},
   taskPlan: {"title": "Plano de tarefas", "progress": "{completed}/{total} concluídas", "pending": "Pendente", "in_progress": "Em andamento", "completed": "Concluído", "running": "Em execução", "ended": "Execução encerrada; há etapas pendentes", "interrupted": "Interrompido; há etapas pendentes", "failed": "Falha na execução; há etapas pendentes"},
   agentAutoUpdate: { label: 'Atualizações automáticas' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "Double 11: 11.11% de crédito extra nas recargas, até 1111 em crédito extra",
     campaignBadge: "11.11",
     campaignLabel: "Double 11",
     title: "Relay de API",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'Conecte o App aos seus dispositivos',
       scanToAdd: 'Escanear para adicionar',
-      purchaseAccess: 'Ver planos',
       viewList: 'Lista',
       viewDownload: 'Download',
       viewMessages: 'Envio de mensagens',
       downloadTitle: 'Ekko Studio no seu celular',
       downloadDescription: 'Estamos em fase beta fechada. É necessário um código de registro para criar uma conta, e divulgaremos alguns códigos em nossas redes sociais.',
-      downloadPaidDescription: 'O app Ekko Studio foi lançado oficialmente e agora é pago. Para começar a usá-lo, acesse a página de preços e compra, escolha o plano mais adequado e conclua a compra.',
       downloadScan: 'Escaneie com o celular',
       downloadScanHint: 'Download para Android disponível',
       available: 'Disponível',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'O token expirou',
-        paidAccountRequired: 'A conta atual não é paga e não pode usar este recurso',
         cloudSubscriptionRequired: 'Esta conta não tem acesso ao Ekko Studio Cloud',
         appAccessExpired: 'O acesso ao teste interno ou à beta pública expirou',
         required: 'O App não forneceu uma autorização de acesso',

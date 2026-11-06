@@ -280,7 +280,6 @@ export default {
     "conflict": "Конфигурация изменилась. Черновик сохранён; сравните с последней версией перед перезагрузкой.",
     "missingDependency": "Сначала установите DSH и pnpm.",
   },
-  announcements: {"later": "Позже", "details": "Подробнее", "gotIt": "Понятно"},
   taskPlan: {"title": "План задач", "progress": "Завершено: {completed}/{total}", "pending": "Не завершено", "in_progress": "В процессе", "completed": "Завершено", "running": "Выполняется", "ended": "Запуск завершён; остались незавершённые шаги", "interrupted": "Прервано; остались незавершённые шаги", "failed": "Ошибка выполнения; остались незавершённые шаги"},
   agentAutoUpdate: { label: 'Автоматические обновления' },
   ekkoConfig: {
@@ -563,7 +562,6 @@ export default {
 
 
   apiRelay: {
-    campaignSlogan: "Двойная 11: бонус 11.11% при пополнении, до 1111 бонусных кредитов",
     campaignBadge: "11.11",
     campaignLabel: "Двойная 11",
     title: "API-реле",
@@ -870,13 +868,11 @@ export default {
     app: {
       subtitle: 'Подключите приложение к своим устройствам',
       scanToAdd: 'Добавить сканированием',
-      purchaseAccess: 'Посмотреть тарифы',
       viewList: 'Список',
       viewDownload: 'Скачать',
       viewMessages: 'Отправка сообщений',
       downloadTitle: 'Ekko Studio на вашем телефоне',
       downloadDescription: 'Сейчас мы проводим закрытое бета-тестирование. Для регистрации нужен код, часть кодов мы будем публиковать в наших социальных сетях.',
-      downloadPaidDescription: 'Приложение Ekko Studio официально запущено и доступно на платной основе. Чтобы начать, перейдите на страницу тарифов и покупки, выберите подходящий тариф и завершите покупку.',
       downloadScan: 'Сканировать телефоном',
       downloadScanHint: 'Версия для Android доступна',
       available: 'Доступно',
@@ -911,7 +907,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Срок действия токена истёк',
-        paidAccountRequired: 'Текущая учётная запись не является платной и не может использовать эту функцию',
         cloudSubscriptionRequired: 'У этой учётной записи нет доступа к Ekko Studio Cloud',
         appAccessExpired: 'Срок доступа к внутреннему тестированию или публичной бета-версии истёк',
         required: 'App не предоставило разрешение на доступ',

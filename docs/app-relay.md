@@ -4,8 +4,7 @@ App Relay lets the mobile App reach a Ekko Studio instance without exposing
 the Studio HTTP server to the Internet. It is independent from the MCU
 `/global-agent` connection.
 
-Studio can use the official `https://api.ekkostudio.xyz` route or the
-Cloudflare `https://cn.ekkostudio.xyz` route. The selected route is persisted
+This fork no longer connects to an official cloud relay. The notes below describe the previous design and are not implemented. The selected route was persisted
 locally and included in cloud QR codes as informational metadata. The App keeps
 an independent route setting; scanning a cloud QR never changes it.
 

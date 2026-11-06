@@ -4,7 +4,6 @@ import { randomUUID } from 'crypto'
 import { businessEvents, APP_BUSINESS_TYPES, type BusinessEvent } from './business-events'
 import { authenticateUserToken, type AuthenticatedUser } from '../../public/auth'
 import { listUserProfiles } from '../../repositories/users-store'
-import { isAppConnectionPushEnabled } from '../../repositories/app-connections-store'
 import { getSession, getSessionNotificationPreview } from '../../repositories/session-store'
 import { getWorkflowRun, getWorkflowRunForSession } from '../../repositories/workflow-run-store'
 import { groupReplyNotification } from '../group-chat/foreground-notification'
@@ -140,7 +139,7 @@ export function bindAppEventSubscription(socket: Socket, localState?: AppStatePr
       if (closed || ticket !== revision) return
       subscription = request
       socket.data.appEventVersion = 1
-      const snapshot = request.snapshot ? (isAppConnectionPushEnabled(token) ? [...appEventState(user, request.profile), ...(localState?.(user, request.profile) || [])] : [])
+      const snapshot = request.snapshot ? []
         .filter(event => matches(request, event) && canReceiveAppEvent(user, event)).map(appEventEnvelope).filter(Boolean) : undefined
       // Exact IDs avoid pruning unread sessions merely because a paginated list omits them.
       const unreadSessions = request.unreadSessionIds?.filter(id => {
@@ -165,7 +164,7 @@ export function bindAppEventSubscription(socket: Socket, localState?: AppStatePr
       // Revalidate JWT/account and current profile/membership on every delivery.
       const user = await authenticateUserToken(token)
       if (!user || !allowed(user, request.profile)) return
-      if (event.type !== 'chat.session.removed' && !isAppConnectionPushEnabled(token)) return
+      if (event.type !== 'chat.session.removed') return
       if (!canReceiveAppEvent(user, event)) return
       const envelope = appEventEnvelope(event)
       if (!envelope || closed || revision !== ticket) return

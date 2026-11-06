@@ -2446,8 +2446,6 @@ export function openCodeSessionHeaders( baseUrl: string, sessionId?: string, pro
 ### `src/model/openrouter-attribution.ts`
 
 ```ts
-export const OPENROUTER_APP_HEADERS = { 'HTTP-Referer': 'https://ekkostudio.xyz', 'X-OpenRouter-Title': 'Ekko Studio', 'X-OpenRouter-Categories': 'cli-agent,personal-agent', } as const
-
 export function openRouterAttributionHeaders(baseUrl: string, provider?: string): Record<string, string>
 ```
 ### `src/model/provider-config.ts`

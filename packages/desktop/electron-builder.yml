@@ -11,9 +11,7 @@ directories:
   output: release
   buildResources: build
 
-publish:
-  provider: generic
-  url: https://download.ekkolearnai.com/latest
+# Desktop auto-update is opt-in through EKKO_STUDIO_UPDATE_FEED_URL. No publish feed is baked in.
 
 # Don't auto-prune our root node_modules; we curate `files` and `extraResources` ourselves.
 buildDependenciesFromSource: false

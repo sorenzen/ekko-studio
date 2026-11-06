@@ -44,7 +44,6 @@ import {
 } from './runtime-relocation'
 import { t } from './desktop-i18n'
 
-const DEFAULT_RUNTIME_BASE_URL = 'https://download.ekkolearnai.com'
 const DEFAULT_RUNTIME_GITHUB_REPO = 'EKKOLearnAI/ekko-studio'
 const RUNTIME_MANIFEST_NAME = 'runtime-manifest.json'
 const PACKAGED_RUNTIME_RELEASE_NAME = 'runtime-release.json'
@@ -346,7 +345,8 @@ function runtimeAssetUrl(assetName: string, tag: string, source: RuntimeDownload
     return `https://github.com/${repo}/releases/download/${encodeURIComponent(tag)}/${encodeURIComponent(assetName)}`
   }
 
-  const template = process.env.HERMES_DESKTOP_RUNTIME_BASE_URL?.trim() || DEFAULT_RUNTIME_BASE_URL
+  const template = process.env.HERMES_DESKTOP_RUNTIME_BASE_URL?.trim() || ''
+  if (!template) throw new Error('Set HERMES_DESKTOP_RUNTIME_BASE_URL before downloading a desktop runtime from a mirror')
   if (template.includes('{asset}') || template.includes('{tag}')) {
     return template
       .replace(/\{asset\}/g, encodeURIComponent(assetName))

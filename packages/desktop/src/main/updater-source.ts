@@ -1,16 +1,18 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-const PRIMARY_FEED = 'https://download.ekkolearnai.com/latest'
-const FALLBACK_FEED = 'https://github.com/EKKOLearnAI/ekko-studio/releases/latest/download'
-
 export function desktopUpdateChannel(platform = process.platform, arch = process.arch): string {
   return platform === 'win32' && arch === 'arm64' ? 'latest-arm64' : 'latest'
 }
 
 export type DesktopUpdateSource =
-  | { channel: 'stable'; url: string; fallbackUrl: string }
+  | { channel: 'disabled' }
+  | { channel: 'opt-in'; url: string }
   | { channel: 'test'; url: string }
+
+function optInFeedUrl(): string {
+  return process.env.EKKO_STUDIO_UPDATE_FEED_URL?.trim() || ''
+}
 
 export function validateTestUpdateUrl(value: unknown): string {
   if (typeof value !== 'string' || !value.trim() || /[\r\n\t]/.test(value)) {
@@ -25,9 +27,8 @@ export function validateTestUpdateUrl(value: unknown): string {
   if (path.endsWith('.yml') || path.endsWith('.yaml')) {
     throw new Error('Use the feed directory URL, not the update manifest URL')
   }
-  if ((url.hostname === 'download.ekkolearnai.com' && (!path || path === '/latest' || path.startsWith('/latest/')))
-    || (url.hostname === 'github.com' && path.startsWith('/ekkolearnai/ekko-studio/releases'))) {
-    throw new Error('The production update source cannot be used for test builds')
+  if (url.hostname === 'download.ekkolearnai.com' || url.hostname.endsWith('.ekkolearnai.com') || url.hostname === 'ekkostudio.xyz' || url.hostname.endsWith('.ekkostudio.xyz')) {
+    throw new Error('Official Ekko update hosts are not used')
   }
   url.pathname = `${url.pathname.replace(/\/+$/, '')}/`
   return url.href
@@ -40,7 +41,9 @@ export function resolveDesktopUpdateSource(metadata: unknown): DesktopUpdateSour
   // Only package metadata can select a test feed. No runtime environment or UI
   // setting can switch a production installation to a test server.
   if (!Object.prototype.hasOwnProperty.call(metadata, 'desktopUpdate')) {
-    return { channel: 'stable', url: PRIMARY_FEED, fallbackUrl: FALLBACK_FEED }
+    const url = optInFeedUrl()
+    if (!url) return { channel: 'disabled' }
+    return { channel: 'opt-in', url: validateTestUpdateUrl(url) }
   }
   const config = (metadata as { desktopUpdate: unknown }).desktopUpdate
   if (!config || typeof config !== 'object' || !('channel' in config) || config.channel !== 'test' || !('url' in config)) {

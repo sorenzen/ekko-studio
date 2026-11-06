@@ -100,7 +100,7 @@ export interface RuntimeVersionStatus {
 export async function fetchRuntimeVersionStatus(options: { probeRuntime?: boolean; includeRemote?: boolean } = {}): Promise<RuntimeVersionStatus> {
   const params = new URLSearchParams()
   if (options.probeRuntime === false) params.set('runtime', 'false')
-  if (options.includeRemote === false) params.set('remote', 'false')
+  if (options.includeRemote === true) params.set('remote', 'true')
   const query = params.size ? `?${params.toString()}` : ''
   return request<RuntimeVersionStatus>(`/api/hermes/runtime-versions${query}`)
 }

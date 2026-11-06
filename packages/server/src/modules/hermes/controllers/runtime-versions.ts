@@ -21,7 +21,7 @@ function parseDownloadSource(value: unknown): VersionDownloadSource {
 
 export async function status(ctx: Context) {
   const probeRuntime = ctx.query.runtime !== 'false' && ctx.query.runtime !== '0'
-  const includeRemote = ctx.query.remote !== 'false' && ctx.query.remote !== '0'
+  const includeRemote = ctx.query.remote === 'true' || ctx.query.remote === '1'
   if (probeRuntime) await configurePreferredHermesRuntime()
   ctx.body = await getRuntimeVersionStatus({ probeRuntime, includeRemote })
 }

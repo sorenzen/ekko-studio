@@ -120,7 +120,7 @@ describe('group chat migration notice', () => {
       expect(messages.groupChat.migrationNoticeTitle).toBeTruthy()
       expect(messages.groupChat.migrationNoticeMessage).toContain('Bot')
       expect(messages.groupChat.migrationNoticeSaveFailed).toBeTruthy()
-      expect(messages.announcements.gotIt).toBeTruthy()
+      expect(messages.common.ok).toBeTruthy()
     }
   })
 })

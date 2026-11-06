@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto'
 import { SessionShareError, SESSION_SHARE_CACHE_MS, type SessionShareAppUser } from '../../contracts/session-shares'
-import { appRelayUrlForRoute, getAppRelayRoute } from '../app-relay/route'
 
 export interface VerifiedShareAppIdentity extends SessionShareAppUser { validUntil: number }
 
@@ -8,7 +7,11 @@ export interface VerifiedShareAppIdentity extends SessionShareAppUser { validUnt
 export class ShareAppIdentityVerifier {
   private cache = new Map<string, VerifiedShareAppIdentity>()
   constructor(
-    private readonly origin: () => Promise<string> = async () => appRelayUrlForRoute(await getAppRelayRoute()),
+    private readonly origin: () => Promise<string> = async () => {
+      const configured = process.env.HERMES_APP_IDENTITY_URL?.trim()
+      if (!configured) throw new SessionShareError('share_identity_unavailable', 503)
+      return configured
+    },
     private readonly fetcher: typeof fetch = fetch,
     private readonly now: () => number = Date.now,
   ) {}

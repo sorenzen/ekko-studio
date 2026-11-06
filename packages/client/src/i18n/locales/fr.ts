@@ -280,7 +280,6 @@ export default {
     "conflict": "La configuration a changé. Le brouillon est conservé ; comparez avec la dernière version avant de recharger.",
     "missingDependency": "Installez d’abord DSH et pnpm.",
   },
-  announcements: {"later": "Plus tard", "details": "Voir les détails", "gotIt": "Compris"},
   taskPlan: {"title": "Plan des tâches", "progress": "{completed}/{total} terminées", "pending": "Non terminé", "in_progress": "En cours", "completed": "Terminé", "running": "Exécution en cours", "ended": "Exécution terminée ; des étapes restent à faire", "interrupted": "Interrompu ; des étapes restent à faire", "failed": "Échec ; des étapes restent à faire"},
   agentAutoUpdate: { label: 'Mises à jour automatiques' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "Double 11 : 11.11% de crédit offert sur les recharges, jusqu’à 1111 de crédit offert",
     campaignBadge: "11.11",
     campaignLabel: "Double 11",
     title: "Relais API",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'Connectez l’App à vos appareils',
       scanToAdd: 'Scanner pour ajouter',
-      purchaseAccess: 'Voir les offres',
       viewList: 'Liste',
       viewDownload: 'Télécharger',
       viewMessages: 'Envoi de messages',
       downloadTitle: 'Ekko Studio sur votre téléphone',
       downloadDescription: 'Nous sommes actuellement en bêta fermée. Un code d’inscription est nécessaire pour créer un compte, et nous en diffuserons quelques-uns sur nos réseaux sociaux.',
-      downloadPaidDescription: 'L’app Ekko Studio est officiellement disponible et son utilisation est payante. Pour commencer, consultez la page des tarifs et d’achat, choisissez l’offre qui vous convient et finalisez votre achat.',
       downloadScan: 'Scanner avec votre téléphone',
       downloadScanHint: 'Le téléchargement Android est disponible',
       available: 'Disponible',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Le jeton a expiré',
-        paidAccountRequired: 'Le compte actuel n’est pas payant et ne peut pas utiliser cette fonctionnalité',
         cloudSubscriptionRequired: 'Ce compte n’a pas accès à Ekko Studio Cloud',
         appAccessExpired: 'L’accès au test interne ou à la bêta publique a expiré',
         required: 'L’App n’a fourni aucune autorisation d’accès',

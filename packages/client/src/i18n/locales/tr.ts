@@ -32,7 +32,6 @@ const writeApprovalMessages = {
 
 export default {
   apiRelay: {
-    campaignSlogan: "Çifte 11: yüklemelerde %11.11 ek kredi, en fazla 1111 ek kredi",
     campaignBadge: "11.11",
     campaignLabel: "Çifte 11",
   },
@@ -322,7 +321,6 @@ export default {
     },
   },
 
-  announcements: { later: 'Daha sonra', details: 'Ayrıntıları görüntüle', gotIt: 'Anladım' },
   taskPlan: {
     title: 'Görev planı',
     progress: '{completed}/{total} tamamlandı',

@@ -164,19 +164,15 @@ function configureUpdateFeed(url: string): void {
 
 async function checkForUpdatesWithFallback(): Promise<void> {
   const source = readDesktopUpdateSource(app.getAppPath())
+  if (source.channel === 'disabled') {
+    console.log('[updater] update checks are off until EKKO_STUDIO_UPDATE_FEED_URL is set')
+    return
+  }
   configureUpdateFeed(source.url)
   if (source.channel === 'test') {
     console.log(`[updater] using packaged test update feed: ${source.url}`)
-    await autoUpdater.checkForUpdates()
-    return
   }
-  try {
-    await autoUpdater.checkForUpdates()
-  } catch (err) {
-    console.warn(`[updater] Cloudflare update feed failed, trying GitHub: ${err instanceof Error ? err.message : String(err)}`)
-    configureUpdateFeed(source.fallbackUrl)
-    await autoUpdater.checkForUpdates()
-  }
+  await autoUpdater.checkForUpdates()
 }
 
 function showUpToDate(info?: UpdateInfo) {

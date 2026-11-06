@@ -96,7 +96,7 @@ Socket 和 PTY 通过 `watch` 监听策略变化；本进程权限修改会关�
 
 云端 `session-share` Relay 无需绑定分享者设备，只允许指定 session 的接口和 `/chat-run`、`/terminal`，并固定身份凭据及终端上下文。云端转发继续要求现有云端权益；直连由 Studio 检查 Studio 使用权益。
 
-App 保存分享连接和领取记录时按账号隔离，使用 `https://ekkostudio.xyz/share/session/#HSC1.…` 官网链接和 `hermes-studio://share/session?sessionInvite=…` 唤起。官网不解析会话或领取 token。App 在凭证到期前更新身份并重新连接对应 Socket，重新恢复单聊状态。
+App 保存分享连接和领取记录时按账号隔离，使用官网分享链接和 `hermes-studio://share/session?sessionInvite=…` 唤起。官网不解析会话或领取 token。App 在凭证到期前更新身份并重新连接对应 Socket，重新恢复单聊状态。本 fork 不再向官方站点核验 App 身份，除非单独设置 `HERMES_APP_IDENTITY_URL`。
 
 部署依赖：先发布云端身份凭证和 Relay 接口、官网落地页，再发布支持凭证验证的 Studio 与 App。旧云端没有权益字段时失败关闭，不降级跳过购买校验。
 

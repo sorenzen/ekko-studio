@@ -12,9 +12,6 @@ import { detectHermesHome } from './path'
 import { cleanupRuntimePath, removeRuntimePath, renameRuntimePath } from './runtime-filesystem'
 
 const ACTIVE_VERSION_FILE = 'active-version.json'
-const DEFAULT_REMOTE_MANIFEST_URL = 'https://api.ekkostudio.xyz/api/studio/versions'
-const FALLBACK_REMOTE_MANIFEST_URL = 'https://ekkostudio.xyz/versions.json'
-const DEFAULT_DOWNLOAD_BASE_URL = 'https://download.ekkolearnai.com'
 const DEFAULT_GITHUB_REPO = 'EKKOLearnAI/ekko-studio'
 
 export interface ActiveVersionManifest {
@@ -182,7 +179,7 @@ function isSameOrNestedPath(parent: string, candidate: string): boolean {
 }
 
 function downloadBaseUrl(): string {
-  return (process.env.HERMES_WEB_UI_DOWNLOAD_BASE_URL || DEFAULT_DOWNLOAD_BASE_URL).trim().replace(/\/$/, '')
+  return (process.env.HERMES_WEB_UI_DOWNLOAD_BASE_URL || '').trim().replace(/\/$/, '')
 }
 
 function downloadAssetUrl(assetName: string, tag: string, source: VersionDownloadSource): string {
@@ -190,7 +187,9 @@ function downloadAssetUrl(assetName: string, tag: string, source: VersionDownloa
     const repo = process.env.HERMES_WEB_UI_DOWNLOAD_GITHUB_REPO?.trim() || DEFAULT_GITHUB_REPO
     return `https://github.com/${repo}/releases/download/${encodeURIComponent(tag)}/${encodeURIComponent(assetName)}`
   }
-  return `${downloadBaseUrl()}/${encodeURIComponent(tag)}/${encodeURIComponent(assetName)}`
+  const base = downloadBaseUrl()
+  if (!base) throw new Error('Set HERMES_WEB_UI_DOWNLOAD_BASE_URL before downloading a runtime from a mirror')
+  return `${base}/${encodeURIComponent(tag)}/${encodeURIComponent(assetName)}`
 }
 
 function readJsonFile<T>(file: string): T | null {
@@ -468,21 +467,17 @@ async function fetchVersionManifest(url: string): Promise<StudioVersionManifest>
   return manifest
 }
 
+function remoteManifestUrl(): string {
+  return process.env.HERMES_WEB_UI_VERSION_MANIFEST_URL?.trim() || ''
+}
+
 async function fetchRemoteVersions(): Promise<{ manifest: StudioVersionManifest | null; error: string }> {
-  const primaryUrl = process.env.HERMES_WEB_UI_VERSION_MANIFEST_URL?.trim() || DEFAULT_REMOTE_MANIFEST_URL
+  const primaryUrl = remoteManifestUrl()
+  if (!primaryUrl) return { manifest: null, error: '' }
   try {
     return { manifest: await fetchVersionManifest(primaryUrl), error: '' }
   } catch (primaryError) {
-    if (primaryUrl === FALLBACK_REMOTE_MANIFEST_URL) {
-      return { manifest: null, error: primaryError instanceof Error ? primaryError.message : String(primaryError) }
-    }
-    try {
-      return { manifest: await fetchVersionManifest(FALLBACK_REMOTE_MANIFEST_URL), error: '' }
-    } catch (fallbackError) {
-      const primaryMessage = primaryError instanceof Error ? primaryError.message : String(primaryError)
-      const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
-      return { manifest: null, error: `${primaryMessage}; fallback failed: ${fallbackMessage}` }
-    }
+    return { manifest: null, error: primaryError instanceof Error ? primaryError.message : String(primaryError) }
   }
 }
 
@@ -500,7 +495,7 @@ export async function getRuntimeVersionStatus(
   options: RuntimeVersionStatusOptions = {},
 ): Promise<RuntimeVersionStatus> {
   const probeRuntime = options.probeRuntime !== false
-  const includeRemote = probeRuntime && options.includeRemote !== false
+  const includeRemote = probeRuntime && options.includeRemote === true && Boolean(remoteManifestUrl())
   const active = probeRuntime ? readActiveVersionManifest() : null
   const installedRuntimes = probeRuntime ? listInstalledRuntimeVersions(active) : []
   const [{ manifest, error }, agentVersion, cliInstallations] = await Promise.all([
@@ -519,9 +514,7 @@ export async function getRuntimeVersionStatus(
     active,
     platform: runtimePlatformKey(),
     activeVersionPath: probeRuntime ? activeVersionPath() : '',
-    remoteManifestUrl: probeRuntime
-      ? process.env.HERMES_WEB_UI_VERSION_MANIFEST_URL?.trim() || DEFAULT_REMOTE_MANIFEST_URL
-      : '',
+    remoteManifestUrl: probeRuntime ? remoteManifestUrl() : '',
     remoteError: error,
     hermes: {
       activeVersion: probeRuntime ? active?.hermesRuntimeVersion || '' : '',

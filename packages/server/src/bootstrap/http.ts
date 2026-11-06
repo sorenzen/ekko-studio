@@ -1,6 +1,4 @@
 import { registerDesktopBrowserRelay } from '../modules/studio/sockets/desktop-browser'
-import { setupMobileTerminal } from '../modules/hermes/sockets/mobile-terminal'
-import { getSessionMetadata as getTerminalSessionMetadata } from '../modules/studio/public/sessions'
 import Koa from 'koa'
 import type { Context } from 'koa'
 import cors from '@koa/cors'
@@ -14,7 +12,6 @@ import { initLoginLimiter } from '../modules/studio/services/auth/login-limiter'
 import { createShutdownHandler } from './lifecycle'
 import { setupTerminalWebSocket } from '../modules/hermes/sockets/terminal'
 import { setupKanbanEventsWebSocket } from '../modules/hermes/sockets/kanban-events'
-import { startVersionCheck } from './health'
 import { registerRoutes } from './routes'
 import { dshPluginUi } from '../modules/coding-agents/services'
 import './chat-agent-runtime-adapter'
@@ -35,18 +32,8 @@ import { ensureProfileGatewaysRunning } from '../modules/hermes/services/gateway
 import { runRegisteredStartupTasks } from './startup-tasks'
 import { refreshConfiguredProviderModelCatalogsInBackground } from '../modules/hermes/services/providers/model-catalog-cache'
 import { refreshModelCatalog } from '../modules/studio/public/model-catalog'
-import {
-  selectLanIPv4Address,
-  startLanDiscoveryResponder,
-  stopLanDiscoveryResponder,
-} from './lan-discovery'
+import { networkInterfaces } from 'os'
 import { startGlobalAgentServer } from '../modules/studio/public/global-agent'
-import { startLocalAppRelayServer } from '../modules/studio/services/app-relay/server'
-import {
-  hasPendingCloudAppConnectionRevocations,
-  listAppConnections,
-} from '../modules/studio/repositories/app-connections-store'
-import { ensureAppRelayHostClient } from '../modules/studio/services/app-relay/connection'
 import { setupGlobalEkkoAgent } from './ekko'
 import { injectManagedEkkoMcpServers } from '../modules/ekko/services/mcp'
 import { WorkflowSocketServer } from '../modules/studio/sockets/workflow'
@@ -575,23 +562,6 @@ export async function bootstrap() {
   setChatRunServer(chatRunServer)
   activeGroupChatServer.setChatRunService(chatRunServer)
   chatRunServer.init()
-  const mobileTerminal = setupMobileTerminal(activeGroupChatServer.getIO(), context => {
-    if (context.source === 'single') {
-      const session = getTerminalSessionMetadata(context.sourceId)
-      return session ? { profile: session.profile, workspace: session.workspace || '' } : null
-    }
-    const room = activeGroupChatServer.getStorage().getRoom(context.sourceId)
-    return room ? { profile: context.profile, workspace: room.workspace || '' } : null
-  })
-  additionalShutdownSteps.push({ name: 'Mobile terminal PTY sessions', close: () => mobileTerminal.close() })
-  startLocalAppRelayServer(activeGroupChatServer.getIO(), { localBaseUrl: loopbackBaseUrl })
-  console.log('[bootstrap] local App relay server ready')
-  if (
-    listAppConnections().some(connection => connection.connection_type === 'cloud')
-    || hasPendingCloudAppConnectionRevocations()
-  ) {
-    void ensureAppRelayHostClient().catch(err => logger.warn(err, '[app-relay] cloud host restore failed'))
-  }
   const groupAgentOutboundRelayManager = getGroupAgentOutboundRelayManager(
     () => activeGroupChatServer.getChatRunService(),
   )
@@ -665,17 +635,13 @@ export async function bootstrap() {
     })
   })
 
-  const selectedLanAddress = selectLanIPv4Address('')
-  const localIp = selectedLanAddress === '127.0.0.1' ? 'localhost' : selectedLanAddress
-  console.log(`Server: http://localhost:${config.port} (LAN: http://${localIp}:${config.port})`)
+  const lanAddresses = Object.values(networkInterfaces()).flatMap(items => (
+    (items || []).filter(item => item.family === 'IPv4' && !item.internal).map(item => item.address)
+  ))
+  const lanLabel = lanAddresses.length ? lanAddresses.map(address => `http://${address}:${config.port}`).join(', ') : 'none'
+  console.log(`Server: http://localhost:${config.port} (bind ${config.host}; LAN: ${lanLabel})`)
   console.log(`Log: ${config.appHome}/logs/server.log`)
-  logger.info('Server: http://localhost:%d (LAN: http://%s:%d)', config.port, localIp, config.port)
-  // Small Box firmware discovers its Studio backend through this shared responder.
-  startLanDiscoveryResponder({ httpPort: config.port })
-  additionalShutdownSteps.push({
-    name: 'LAN discovery responder',
-    close: stopLanDiscoveryResponder,
-  })
+  logger.info('Server: http://localhost:%d (bind %s; LAN: %s)', config.port, config.host, lanLabel)
   refreshConfiguredProviderModelCatalogsInBackground('bootstrap')
 
   if (isDesktopRuntime()) {
@@ -700,7 +666,6 @@ export async function bootstrap() {
     agentBridgeManager,
     additionalShutdownSteps,
   )
-  startVersionCheck()
   console.log('[bootstrap] startup complete')
 }
 

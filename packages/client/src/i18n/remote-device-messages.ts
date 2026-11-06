@@ -1,5 +1,6 @@
 export const remoteDeviceMessages = {
   "en": {
+    "desktopOnly": "Remote devices are available in the desktop app.",
     "title": "Remote devices",
     "description": "Save other Studio devices here and switch between them and this computer.",
     "local": "localhost",
@@ -30,6 +31,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Use a Studio server at the root of a domain or port, such as https://studio.example.com. Subpath deployments are not supported."
   },
   "zh": {
+    "desktopOnly": "远程设备只在桌面版里可用。",
     "title": "远程设备",
     "description": "保存其他 Studio 设备，在远程设备与本机之间切换。",
     "local": "localhost",
@@ -60,6 +62,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "请使用独立域名或端口的 Studio 服务根地址，例如 https://studio.example.com。暂不支持 /studio 等子路径部署。"
   },
   "zh-TW": {
+    "desktopOnly": "遠端裝置只在桌面版中可用。",
     "title": "遠端裝置",
     "description": "儲存其他 Studio 裝置，在遠端裝置與本機之間切換。",
     "local": "localhost",
@@ -90,6 +93,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "請使用獨立網域或連接埠的 Studio 服務根位址，例如 https://studio.example.com。暫不支援 /studio 等子路徑部署。"
   },
   "ja": {
+    "desktopOnly": "リモートデバイスはデスクトップアプリでのみ使えます。",
     "title": "リモートデバイス",
     "description": "他の Studio デバイスを保存し、このコンピューターとの間で切り替えます。",
     "local": "localhost",
@@ -120,6 +124,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "https://studio.example.com のように、ドメインまたはポート直下の Studio アドレスを使用してください。サブパスの配置には対応していません。"
   },
   "ko": {
+    "desktopOnly": "원격 기기는 데스크톱 앱에서만 사용할 수 있습니다.",
     "title": "원격 기기",
     "description": "다른 Studio 기기를 저장하고 이 컴퓨터와 전환하세요.",
     "local": "localhost",
@@ -150,6 +155,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "https://studio.example.com처럼 도메인 또는 포트의 루트에 있는 Studio 주소를 사용하세요. 하위 경로 배포는 지원하지 않습니다."
   },
   "de": {
+    "desktopOnly": "Remote-Geräte gibt es nur in der Desktop-App.",
     "title": "Entfernte Geräte",
     "description": "Andere Studio-Geräte speichern und zwischen ihnen und diesem Computer wechseln.",
     "local": "localhost",
@@ -180,6 +186,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Verwenden Sie einen Studio-Server direkt unter einer Domain oder einem Port, z. B. https://studio.example.com. Unterpfade werden nicht unterstützt."
   },
   "fr": {
+    "desktopOnly": "Les appareils distants sont disponibles dans l’application de bureau.",
     "title": "Appareils distants",
     "description": "Enregistrez d’autres appareils Studio et basculez entre eux et cet ordinateur.",
     "local": "localhost",
@@ -210,6 +217,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Utilisez un serveur Studio à la racine d’un domaine ou d’un port, par exemple https://studio.example.com. Les sous-chemins ne sont pas pris en charge."
   },
   "es": {
+    "desktopOnly": "Los dispositivos remotos solo están en la app de escritorio.",
     "title": "Dispositivos remotos",
     "description": "Guarda otros dispositivos Studio y cambia entre ellos y este equipo.",
     "local": "localhost",
@@ -240,6 +248,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Usa un servidor Studio en la raíz de un dominio o puerto, como https://studio.example.com. No se admiten rutas secundarias."
   },
   "pt": {
+    "desktopOnly": "Dispositivos remotos estão disponíveis apenas no app para computador.",
     "title": "Dispositivos remotos",
     "description": "Salve outros dispositivos Studio e alterne entre eles e este computador.",
     "local": "localhost",
@@ -270,6 +279,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Use um servidor Studio na raiz de um domínio ou porta, como https://studio.example.com. Subcaminhos não são compatíveis."
   },
   "ru": {
+    "desktopOnly": "Удалённые устройства доступны только в настольном приложении.",
     "title": "Удалённые устройства",
     "description": "Сохраняйте устройства Studio и переключайтесь между ними и этим компьютером.",
     "local": "localhost",
@@ -300,6 +310,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "Используйте Studio в корне домена или порта, например https://studio.example.com. Развёртывание в подпути не поддерживается."
   },
   "ar": {
+    "desktopOnly": "الأجهزة البعيدة متاحة في تطبيق سطح المكتب فقط.",
     "title": "الأجهزة البعيدة",
     "description": "احفظ أجهزة Studio الأخرى وبدّل بينها وبين هذا الكمبيوتر.",
     "local": "localhost",
@@ -330,6 +341,7 @@ export const remoteDeviceMessages = {
     "unsupportedPath": "استخدم خادم Studio في جذر نطاق أو منفذ، مثل https://studio.example.com. النشر في مسار فرعي غير مدعوم."
   },
   "tr": {
+    "desktopOnly": "Uzak cihazlar yalnızca masaüstü uygulamada kullanılabilir.",
     "title": "Uzak cihazlar",
     "description": "Diğer Studio cihazlarını kaydedin ve bu bilgisayar ile aralarında geçiş yapın.",
     "local": "localhost",

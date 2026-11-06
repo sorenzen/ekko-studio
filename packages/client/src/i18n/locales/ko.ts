@@ -280,7 +280,6 @@ export default {
     "conflict": "설정이 변경되었습니다. 초안은 유지됩니다. 최신 버전과 비교한 뒤 다시 불러오세요.",
     "missingDependency": "먼저 DSH와 pnpm을 설치하세요.",
   },
-  announcements: {"later": "나중에", "details": "자세히 보기", "gotIt": "확인"},
   taskPlan: {"title": "작업 계획", "progress": "{completed}/{total} 완료", "pending": "미완료", "in_progress": "진행 중", "completed": "완료", "running": "실행 중", "ended": "실행 종료 · 미완료 단계가 있습니다", "interrupted": "중단됨 · 미완료 단계가 있습니다", "failed": "실행 실패 · 미완료 단계가 있습니다"},
   agentAutoUpdate: { label: '자동 업데이트' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
   },
 
   apiRelay: {
-    campaignSlogan: "더블 일레븐 충전 시 11.11% 추가 크레딧, 최대 1111 크레딧 증정",
     campaignBadge: "11.11",
     campaignLabel: "더블 일레븐",
     title: "API 릴레이",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'App을 기기에 연결',
       scanToAdd: '스캔하여 추가',
-      purchaseAccess: '요금제 보기',
       viewList: '목록',
       viewDownload: '다운로드',
       viewMessages: '메시지 전송',
       downloadTitle: '휴대폰에서 Ekko Studio 사용하기',
       downloadDescription: '현재 비공개 베타 테스트 중이며 가입하려면 등록 코드가 필요합니다. 일부 등록 코드는 소셜 미디어를 통해 공개할 예정입니다.',
-      downloadPaidDescription: 'Ekko Studio App이 정식 출시되었으며 현재 유료로 제공됩니다. 이용하려면 요금 및 구매 페이지에서 적합한 플랜을 선택하고 구매를 완료해 주세요.',
       downloadScan: '휴대폰으로 스캔',
       downloadScanHint: 'Android 다운로드 가능',
       available: '다운로드 가능',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: '토큰이 만료되었습니다',
-        paidAccountRequired: '현재 계정은 유료 계정이 아니므로 이 기능을 사용할 수 없습니다',
         cloudSubscriptionRequired: '이 계정에는 Ekko Studio Cloud 이용 권한이 없습니다',
         appAccessExpired: '내부 테스트 또는 공개 베타 이용 기간이 만료되었습니다',
         required: 'App에서 접근 권한을 제공하지 않았습니다',

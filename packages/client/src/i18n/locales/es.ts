@@ -280,7 +280,6 @@ export default {
     "conflict": "La configuración cambió. Se conserva el borrador; compara con la última versión antes de recargar.",
     "missingDependency": "Instala DSH y pnpm primero.",
   },
-  announcements: {"later": "Más tarde", "details": "Ver detalles", "gotIt": "Entendido"},
   taskPlan: {"title": "Plan de tareas", "progress": "{completed}/{total} completadas", "pending": "Pendiente", "in_progress": "En curso", "completed": "Completado", "running": "En ejecución", "ended": "Ejecución finalizada; quedan pasos pendientes", "interrupted": "Interrumpido; quedan pasos pendientes", "failed": "Ejecución fallida; quedan pasos pendientes"},
   agentAutoUpdate: { label: 'Actualizaciones automáticas' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "Doble 11: 11.11% de crédito adicional al recargar, hasta 1111 de crédito adicional",
     campaignBadge: "11.11",
     campaignLabel: "Doble 11",
     title: "Relay de API",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'Conecta la App con tus dispositivos',
       scanToAdd: 'Escanear para añadir',
-      purchaseAccess: 'Ver planes',
       viewList: 'Lista',
       viewDownload: 'Descargar',
       viewMessages: 'Envío de mensajes',
       downloadTitle: 'Ekko Studio en tu teléfono',
       downloadDescription: 'Estamos en fase beta cerrada. Se necesita un código de registro para crear una cuenta y publicaremos algunos códigos en nuestras redes sociales.',
-      downloadPaidDescription: 'La app Ekko Studio ya se ha lanzado oficialmente y es de pago. Para empezar a usarla, visita la página de precios y compra, elige el plan que mejor se adapte a ti y completa la compra.',
       downloadScan: 'Escanea con tu teléfono',
       downloadScanHint: 'La descarga para Android ya está disponible',
       available: 'Disponible',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'El token ha caducado',
-        paidAccountRequired: 'La cuenta actual no es de pago y no puede usar esta función',
         cloudSubscriptionRequired: 'Esta cuenta no tiene acceso a Ekko Studio Cloud',
         appAccessExpired: 'El acceso a la prueba interna o beta pública ha caducado',
         required: 'La App no proporcionó una autorización de acceso',

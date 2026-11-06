@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/EKKOLearnAI/ekko-studio/releases/latest">下载 Ekko Studio 桌面版</a>
   ·
-  <a href="https://ekkostudio.xyz/#/docs/getting-started">使用文档</a>
+  <a href="https://github.com/sorenzen/ekko-studio">使用文档</a>
   ·
   <code>npm install -g ekko-studio && ekko-studio-web start</code>
 </p>
@@ -332,9 +332,7 @@ ekko-studio-web reset-default-login
 `ekko-studio web -h` 查看服务端 CLI 帮助。`ekko-studio-mcp` 默认暴露
 `api` 工具集；按任务选择 `browser`、`devices`、`use` 或 `plan`，可以缩小 MCP 暴露面。
 
-桌面自动更新会优先读取 `https://download.ekkolearnai.com/latest`。
-如果该端点不可用，更新器会回退到
-`https://github.com/EKKOLearnAI/ekko-studio/releases/latest/download`。
+桌面自动更新默认关闭。只有设置 `EKKO_STUDIO_UPDATE_FEED_URL` 为 HTTPS 更新目录时才会检查更新。
 
 ### npm 安装
 
@@ -348,6 +346,17 @@ ekko-studio-web start
 用户数据仍保存在 `~/.hermes-web-ui`。
 
 打开 **http://localhost:8648**
+
+服务监听 `BIND_HOST`（默认 `0.0.0.0`）和 `PORT`（默认 `8648`）。手机通过局域网或自建 mesh VPN 访问时，打开 `http://<这台电脑的地址>:8648`。只想本机访问时设置 `BIND_HOST=127.0.0.1`。浏览器地址里的主机要和 API 一致，默认同源 CORS 才会放行。
+
+在 Apple Silicon Mac 上从源码运行：
+
+```bash
+# Node.js 23 或更高
+npm install
+npm run build
+node bin/hermes-web-ui.mjs start
+```
 
 需要 Node.js **23 或更高版本**。Ekko Agent 随包内置；使用 Hermes Agent 时，需在同一台机器安装其运行时，或选择内置运行时的桌面版/Docker。
 
@@ -428,7 +437,7 @@ Studio 启动后端聊天能力时，会优先使用包含 `run_agent.py` 的源
 | `HERMES_BRIDGE_TOOLSETS` | profile/默认值 | bridge 运行时的 toolset 覆盖。 |
 | `HERMES_BRIDGE_MAX_TURNS` | profile/默认值 | bridge 运行时的最大轮数覆盖。 |
 | `HERMES_BRIDGE_SUPPRESS_PLATFORM_HINT` | `cli` | 控制传给 Hermes Agent 的 bridge platform hint suppression。 |
-| `HERMES_OPENROUTER_APP_REFERER` | `https://ekkostudio.xyz` | bridge 运行发送给 OpenRouter 的 attribution referer。 |
+| `HERMES_OPENROUTER_APP_REFERER` | 未设置 | 可选的 OpenRouter attribution referer。未设置该项、`HERMES_OPENROUTER_APP_TITLE` 或 `HERMES_OPENROUTER_APP_CATEGORIES` 时不发送 attribution 头。 |
 | `HERMES_OPENROUTER_APP_TITLE` | `Ekko Studio` | Bridge 运行发送给 OpenRouter 的 Attribution Title。 |
 | `HERMES_OPENROUTER_APP_CATEGORIES` | `cli-agent,personal-agent` | bridge 运行发送给 OpenRouter 的 attribution categories。 |
 | `HERMES_WEB_UI_MANAGED_GATEWAY` | 默认开启 | 控制 Studio 托管 Hermes Gateway 进程；设为 `0`、`false`、`no` 或 `off` 时改用 `hermes gateway start`。 |

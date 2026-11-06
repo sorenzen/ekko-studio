@@ -1,7 +1,6 @@
 # App agent catalog
 
-`config/agents.json` is the canonical public catalog. The website build copies it
-to `https://ekkostudio.xyz/agents.json`; App loads that URL once on process launch.
+`config/agents.json` is the canonical public catalog. This fork loads that local file. The upstream website copy is not fetched.
 App first uses the last valid local cache, then the bundled fallback. A failed
 request, incompatible schema or invalid document leaves the current catalog intact.
 The catalog contains public metadata only, never credentials or executable commands.

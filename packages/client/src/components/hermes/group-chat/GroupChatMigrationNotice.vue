@@ -67,7 +67,7 @@ onUnmounted(() => {
       {{ t('groupChat.migrationNoticeSaveFailed') }}
     </NAlert>
     <template #action>
-      <NButton type="primary" @click="acknowledge">{{ t('announcements.gotIt') }}</NButton>
+      <NButton type="primary" @click="acknowledge">{{ t('common.ok') }}</NButton>
     </template>
   </NModal>
 </template>

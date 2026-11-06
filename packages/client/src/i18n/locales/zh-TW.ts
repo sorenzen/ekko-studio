@@ -280,7 +280,6 @@ export default {
     "conflict": "設定已被其他操作修改。草稿已保留，請比較最新版本後重新載入。",
     "missingDependency": "請先安裝 DSH 與 pnpm。",
   },
-  announcements: {"later": "稍後", "details": "查看詳情", "gotIt": "知道了"},
   taskPlan: {"title": "任務計畫", "progress": "{completed}/{total} 已完成", "pending": "未完成", "in_progress": "進行中", "completed": "已完成", "running": "執行中", "ended": "本次執行已結束，其餘步驟未完成", "interrupted": "已中斷，其餘步驟未完成", "failed": "執行失敗，其餘步驟未完成"},
   agentAutoUpdate: { label: '自動更新' },
   ekkoConfig: {
@@ -637,7 +636,6 @@ export default {
   },
 
   apiRelay: {
-    campaignSlogan: "雙十一儲值加贈11.11%額度，最高加贈1111額度",
     campaignBadge: "雙11",
     campaignLabel: "雙十一",
     title: "API 中轉",
@@ -931,13 +929,11 @@ export default {
     app: {
       subtitle: '讓 App 連接你的裝置',
       scanToAdd: '掃碼新增',
-      purchaseAccess: '前往購買',
       viewList: '列表',
       viewDownload: '下載',
       viewMessages: '訊息推送',
       downloadTitle: '在手機上使用 Ekko Studio',
       downloadDescription: '我們目前正處於封閉測試階段，必須使用註冊碼才能註冊；我們會在社群媒體上釋出部分註冊碼。',
-      downloadPaidDescription: 'Ekko Studio App 已正式上線，目前處於付費階段。如需體驗，請前往定價與購買頁面選擇合適的方案，完成購買後即可開始使用。',
       downloadScan: '用手機掃碼下載',
       downloadScanHint: '目前提供 Android 安裝包',
       available: '可下載',
@@ -972,7 +968,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Token 已失效',
-        paidAccountRequired: '目前帳號不是付費帳號，無法使用此功能',
         cloudSubscriptionRequired: '目前帳號尚未開通 Ekko Studio Cloud，無法使用雲端連線',
         appAccessExpired: '目前內部測試或公開測試資格已過期，無法使用雲端連線',
         required: 'App 未攜帶存取授權簽章',

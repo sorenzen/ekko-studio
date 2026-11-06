@@ -280,7 +280,6 @@ export default {
     "conflict": "配置已被其他操作修改。草稿已保留，请对比最新版本后重新加载。",
     "missingDependency": "请先安装 DSH 和 pnpm。",
   },
-  announcements: {"later": "稍后", "details": "查看详情", "gotIt": "知道了"},
   taskPlan: {"title": "任务计划", "progress": "{completed}/{total} 已完成", "pending": "未完成", "in_progress": "进行中", "completed": "已完成", "running": "执行中", "ended": "本次运行已结束，剩余步骤未完成", "interrupted": "已中断，剩余步骤未完成", "failed": "运行失败，剩余步骤未完成"},
   agentAutoUpdate: { label: '自动更新' },
   ekkoConfig: {
@@ -637,7 +636,6 @@ export default {
   },
 
   apiRelay: {
-    campaignSlogan: "双十一充值加赠11.11%额度，最高加赠1111额度",
     campaignBadge: "双11",
     campaignLabel: "双十一",
     title: "API 中转",
@@ -936,7 +934,6 @@ export default {
       viewMessages: '消息推送',
       downloadTitle: '在手机上使用 Ekko Studio',
       downloadDescription: '我们正在内测阶段，需要注册码才有办法注册，我们会在社交媒体放出一部分注册码。',
-      downloadPaidDescription: 'Ekko Studio App 已正式上线，目前处于付费阶段。如需体验，请前往定价与购买页面选择合适的方案，完成购买后即可开始使用。',
       downloadScan: '手机扫码下载',
       downloadScanHint: '当前提供 Android 安装包',
       available: '可下载',
@@ -970,7 +967,6 @@ export default {
       accessFailureMode: '当前模式：{mode}',
       accessFailureDeviceName: '设备名称：{deviceName}',
       accessFailureTime: '失败时间：{time}',
-      purchaseAccess: '去购买',
       accessModes: {
         internal: '内测',
         public_beta: '公测',
@@ -979,7 +975,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Token 已失效',
-        paidAccountRequired: '当前账户不是付费账号，无法使用该功能',
         cloudSubscriptionRequired: '当前账号未开通 Ekko Studio Cloud，无法使用云端连接',
         appAccessExpired: '当前内测或公测资格已过期，无法使用云端连接',
         required: 'App 未携带访问授权签名',

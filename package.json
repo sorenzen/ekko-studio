@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/EKKOLearnAI/ekko-studio.git"
   },
-  "homepage": "https://ekkostudio.xyz",
+  "homepage": "https://github.com/sorenzen/ekko-studio",
   "license": "BSL-1.1",
   "engines": {
     "node": ">=23.0.0"
@@ -61,9 +61,6 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test --pass-with-no-tests",
     "test:e2e:ui": "playwright test --ui --pass-with-no-tests",
-    "mcu:v1:flash:clean": "pio run -d packages/mcu/esp32-c3/v1 && pio run -d packages/mcu/esp32-c3/v1 -t erase && pio run -d packages/mcu/esp32-c3/v1 -t upload",
-    "mcu:v2:flash:clean": "pio run -d packages/mcu/esp32-c3/v2 && pio run -d packages/mcu/esp32-c3/v2 -t erase && pio run -d packages/mcu/esp32-c3/v2 -t upload",
-    "mcu:flash:clean": "npm run mcu:v1:flash:clean",
     "desktop:install": "npm ci --prefix packages/desktop --no-audit --no-fund",
     "desktop:prepare-runtime": "npm --prefix packages/desktop run prepare:runtime",
     "desktop:prepare-python": "npm --prefix packages/desktop run prepare:python",
@@ -107,7 +104,6 @@
     "smol-toml": "^1.8.0",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
-    "werift": "0.24.4",
     "yaml": "^2.9.0"
   },
   "optionalDependencies": {

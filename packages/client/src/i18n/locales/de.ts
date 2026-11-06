@@ -280,7 +280,6 @@ export default {
     "conflict": "Konfiguration wurde geändert. Der Entwurf bleibt erhalten; vor dem Neuladen mit der neuesten Version vergleichen.",
     "missingDependency": "Zuerst DSH und pnpm installieren.",
   },
-  announcements: {"later": "Später", "details": "Details ansehen", "gotIt": "Verstanden"},
   taskPlan: {"title": "Aufgabenplan", "progress": "{completed}/{total} abgeschlossen", "pending": "Nicht abgeschlossen", "in_progress": "In Bearbeitung", "completed": "Abgeschlossen", "running": "Wird ausgeführt", "ended": "Lauf beendet; Schritte bleiben offen", "interrupted": "Unterbrochen; Schritte bleiben offen", "failed": "Lauf fehlgeschlagen; Schritte bleiben offen"},
   agentAutoUpdate: { label: 'Automatische Updates' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "Double 11: 11.11% Bonusguthaben beim Aufladen, bis zu 1111 Bonusguthaben",
     campaignBadge: "11.11",
     campaignLabel: "Double 11",
     title: "API-Relay",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'Verbinde die App mit deinen Geräten',
       scanToAdd: 'Per Scan hinzufügen',
-      purchaseAccess: 'Tarife ansehen',
       viewList: 'Liste',
       viewDownload: 'Download',
       viewMessages: 'Nachrichtenversand',
       downloadTitle: 'Ekko Studio auf deinem Smartphone',
       downloadDescription: 'Wir befinden uns derzeit in einer geschlossenen Beta. Für die Registrierung ist ein Registrierungscode erforderlich; einige Codes werden wir über unsere Social-Media-Kanäle veröffentlichen.',
-      downloadPaidDescription: 'Die Ekko Studio App ist jetzt offiziell als kostenpflichtiges Produkt verfügbar. Besuchen Sie die Preis- und Kaufseite, wählen Sie den passenden Tarif und schließen Sie den Kauf ab.',
       downloadScan: 'Mit dem Smartphone scannen',
       downloadScanHint: 'Android-Download ist verfügbar',
       available: 'Verfügbar',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Token ist abgelaufen',
-        paidAccountRequired: 'Das aktuelle Konto ist nicht kostenpflichtig und kann diese Funktion nicht verwenden',
         cloudSubscriptionRequired: 'Dieses Konto hat keinen Zugriff auf Ekko Studio Cloud',
         appAccessExpired: 'Der Zugriff auf den internen Test oder die öffentliche Beta ist abgelaufen',
         required: 'Die App hat keine Zugriffsberechtigung übermittelt',

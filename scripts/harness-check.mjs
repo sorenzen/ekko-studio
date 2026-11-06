@@ -434,30 +434,30 @@ for (const phrase of [
   }
 }
 
-for (const phrase of [
-  'https://download.ekkolearnai.com/latest',
-  'https://github.com/EKKOLearnAI/ekko-studio/releases/latest/download',
-]) {
-  if (!desktopUpdaterSource.includes(phrase)) {
-    fail(`desktop updater source must preserve the production primary and fallback feeds: ${phrase}`)
+for (const phrase of ['ekkolearnai.com', 'ekkostudio.xyz']) {
+  if (desktopUpdaterSource.includes(phrase) && !desktopUpdaterSource.includes(`hostname === 'download.ekkolearnai.com'`)) {
+    fail(`desktop updater source must not embed an official update host: ${phrase}`)
   }
+  if (desktopUpdater.includes(phrase)) fail(`desktop updater must not embed an official update host: ${phrase}`)
+}
+if (!desktopUpdaterSource.includes("channel: 'disabled'")) {
+  fail('desktop updater source must disable update checks unless EKKO_STUDIO_UPDATE_FEED_URL is set')
+}
+if (!desktopUpdater.includes("source.channel === 'disabled'")) {
+  fail('desktop updater must skip update checks when no feed is configured')
 }
 
-// The packaged app-update.yml inherits this url as the electron-updater base. A
-// base without the /latest path segment resolves installer assets against the
-// origin root, which answers every asset request with HTTP 400
-// ("Missing release tag or asset name"); only /latest/<asset> is served.
 {
   const builderConfig = await readText('packages/desktop/electron-builder.yml')
-  const publishBlock = /^publish:\n(?:[ \t]+.*\n)*/m.exec(builderConfig)?.[0] ?? ''
-  const publishUrl = /^[ \t]+url:[ \t]*(\S+)[ \t]*$/m.exec(publishBlock)?.[1]
-  if (!publishUrl) fail('packages/desktop/electron-builder.yml must declare the desktop publish url')
-  if (new URL(publishUrl).pathname.replace(/\/+$/, '') !== '/latest') {
-    fail(`desktop publish url must point at the /latest directory so installer assets resolve under it: ${publishUrl}`)
+  if (/ekkolearnai\.com|ekkostudio\.xyz/.test(builderConfig)) {
+    fail('packages/desktop/electron-builder.yml must not publish to an official Ekko download host')
+  }
+  if (/^publish:/m.test(builderConfig)) {
+    fail('packages/desktop/electron-builder.yml must not bake in a publish feed')
   }
 }
 
-for (const phrase of ['checkForUpdatesWithFallback()', 'readDesktopUpdateSource(app.getAppPath())', 'configureUpdateFeed(source.fallbackUrl)']) {
+for (const phrase of ['checkForUpdatesWithFallback()', 'readDesktopUpdateSource(app.getAppPath())']) {
   if (!desktopUpdater.includes(phrase)) fail(`desktop updater must use the packaged source policy: ${phrase}`)
 }
 

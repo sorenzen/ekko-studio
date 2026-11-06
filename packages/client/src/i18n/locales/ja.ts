@@ -280,7 +280,6 @@ export default {
     "conflict": "設定が変更されました。下書きは保持されています。最新版と比較して再読み込みしてください。",
     "missingDependency": "先に DSH と pnpm をインストールしてください。",
   },
-  announcements: {"later": "後で", "details": "詳細を見る", "gotIt": "確認しました"},
   taskPlan: {"title": "タスク計画", "progress": "{completed}/{total} 完了", "pending": "未完了", "in_progress": "進行中", "completed": "完了", "running": "実行中", "ended": "実行終了・未完了の手順があります", "interrupted": "中断・未完了の手順があります", "failed": "実行失敗・未完了の手順があります"},
   agentAutoUpdate: { label: '自動更新' },
   ekkoConfig: {
@@ -649,7 +648,6 @@ export default {
   },
 
   apiRelay: {
-    campaignSlogan: "ダブルイレブン：チャージで11.11%の追加クレジット、最大1111クレジット",
     campaignBadge: "11.11",
     campaignLabel: "ダブルイレブン",
     title: "APIリレー",
@@ -943,13 +941,11 @@ export default {
     app: {
       subtitle: 'App をデバイスに接続',
       scanToAdd: 'スキャンして追加',
-      purchaseAccess: 'プランを見る',
       viewList: '一覧',
       viewDownload: 'ダウンロード',
       viewMessages: 'メッセージ送信',
       downloadTitle: 'スマートフォンで Ekko Studio を使う',
       downloadDescription: '現在クローズドベータ中です。登録には登録コードが必要で、今後ソーシャルメディアで一部のコードを配布します。',
-      downloadPaidDescription: 'Ekko Studio App は正式にリリースされ、現在は有料でご利用いただけます。ご利用になるには、料金・購入ページで最適なプランを選び、購入手続きを完了してください。',
       downloadScan: 'スマートフォンでスキャン',
       downloadScanHint: 'Android 版をダウンロードできます',
       available: 'ダウンロード可能',
@@ -984,7 +980,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'トークンの有効期限が切れています',
-        paidAccountRequired: '現在のアカウントは有料アカウントではないため、この機能を利用できません',
         cloudSubscriptionRequired: 'このアカウントには Ekko Studio Cloud の利用権限がありません',
         appAccessExpired: '内部テストまたはパブリックベータの利用期限が切れています',
         required: 'App からアクセス権限が送信されていません',

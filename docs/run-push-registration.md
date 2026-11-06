@@ -96,8 +96,7 @@ interactions and progress events do not send. Single-chat intermediate completio
 with queued work follow the same suppression policy as Android.
 
 Studio POSTs to `/push/v1/send` using the current Device Connections cloud route:
-official uses `config.appRelay.url` (default `https://api.ekkostudio.xyz`), and
-Cloudflare uses `https://cn.ekkostudio.xyz`. Each notification event reads the
+This fork does not send push or Live Activity requests to an official relay. The previous design used the selected cloud route. Each notification event read the
 current setting, so route changes apply without restarting Studio. Requests use
 the current device's dedicated credential. The payload leaves notification title/body empty so the gateway selects fixed
 Android-equivalent text by event type and chat/group/workflow domain. Conversation

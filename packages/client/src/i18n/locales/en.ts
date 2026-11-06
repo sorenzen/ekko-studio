@@ -280,7 +280,6 @@ export default {
     "conflict": "Configuration changed elsewhere. Your draft is preserved; compare with the latest version before reloading.",
     "missingDependency": "Install DSH and pnpm before managing packages.",
   },
-  announcements: {"later": "Later", "details": "View details", "gotIt": "Got it"},
   taskPlan: {"title": "Task plan", "progress": "{completed}/{total} completed", "pending": "Not completed", "in_progress": "In progress", "completed": "Completed", "running": "Running", "ended": "Run ended; unfinished steps remain", "interrupted": "Interrupted; unfinished steps remain", "failed": "Run failed; unfinished steps remain"},
   agentAutoUpdate: { label: 'Automatic updates' },
   ekkoConfig: {
@@ -637,7 +636,6 @@ export default {
 
   // Sidebar
   apiRelay: {
-    campaignSlogan: "Double 11: 11.11% bonus credit on recharges, up to 1111 in bonus credit",
     campaignBadge: "11.11",
     campaignLabel: "Double 11",
     title: "API Relay",
@@ -936,7 +934,6 @@ export default {
       viewMessages: 'Message Push',
       downloadTitle: 'Ekko Studio on your phone',
       downloadDescription: 'We are currently in closed beta. A registration code is required to sign up, and we will share a limited number of codes on our social media channels.',
-      downloadPaidDescription: 'The Ekko Studio App is now officially available as a paid product. To get started, visit the pricing and purchase page, choose the plan that suits you, and complete your purchase.',
       downloadScan: 'Scan with your phone',
       downloadScanHint: 'Android download available now',
       available: 'Available',
@@ -970,7 +967,6 @@ export default {
       accessFailureMode: 'Current mode: {mode}',
       accessFailureDeviceName: 'Device: {deviceName}',
       accessFailureTime: 'Failed at: {time}',
-      purchaseAccess: 'View plans',
       accessModes: {
         internal: 'Internal testing',
         public_beta: 'Public beta',
@@ -979,7 +975,6 @@ export default {
       },
       accessFailures: {
         tokenExpired: 'Token expired',
-        paidAccountRequired: 'The current account is not a paid account and cannot use this feature',
         cloudSubscriptionRequired: 'This account does not have Ekko Studio Cloud access',
         appAccessExpired: 'This internal test or public beta access has expired',
         required: 'The App did not provide an access entitlement',

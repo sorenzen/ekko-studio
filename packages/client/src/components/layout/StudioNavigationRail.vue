@@ -7,19 +7,20 @@ import { NTooltip } from 'naive-ui'
 import { isStoredSuperAdmin } from '@/api/client'
 import RouteLinkItem from '@/components/common/RouteLinkItem.vue'
 import PageSidebarFooter from './PageSidebarFooter.vue'
-import RelayCampaignBadge from '@/components/hermes/RelayCampaignBadge.vue'
 import { useMobileNavigation } from '@/composables/usePageSidebar'
+import { desktopBridge } from '@/utils/desktop-bridge'
 
 const route = useRoute()
 const { t } = useI18n()
 const canManageAgents = computed(() => isStoredSuperAdmin())
+const hasRemoteDevices = computed(() => desktopBridge()?.isDesktop === true && !!desktopBridge()?.remoteDevices)
 const entries = computed(() => [
   { key: 'person', route: 'hermes.person', label: 'person.subtitle', avatar: deploymentUrl('/person/idle.gif') },
   { key: 'chat', route: 'hermes.chat', label: 'sidebar.singleChat', path: 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
   { key: 'group', route: 'hermes.groupChat', label: 'sidebar.groupChat', path: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75' },
   { key: 'workflow', route: 'hermes.workflow', label: 'sidebar.workflow', path: 'M8 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0M22 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M22 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 12h3a4 4 0 0 0 4-4V6M8 12h3a4 4 0 0 1 4 4v2' },
   { key: 'history', route: 'hermes.history', label: 'sidebar.history', path: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0M12 7v5l3 2' },
-  { key: 'connections', route: 'hermes.connections', label: 'sidebar.connections', path: 'M3 4h14a1 1 0 0 1 1 1v4M3 4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h9M7 16v4M5 20h7M15 9h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1M17 18h2' },
+  ...(hasRemoteDevices.value ? [{ key: 'connections', route: 'hermes.connections', label: 'sidebar.connections', path: 'M3 4h14a1 1 0 0 1 1 1v4M3 4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h9M7 16v4M5 20h7M15 9h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1M17 18h2' }] : []),
   ...(canManageAgents.value ? [{ key: 'agents', route: 'hermes.agentManager', label: 'sidebar.agentManager', path: 'M12 8V4H8M7 8h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3M2 14h2M20 14h2M9 13v2M15 13v2' }] : []),
   { key: 'models', route: 'hermes.models', label: 'sidebar.models', path: 'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1' },
   { key: 'usage', route: 'hermes.usage', label: 'sidebar.usage', path: 'M3 12h4v9H3zM10 7h4v14h-4zM17 3h4v18h-4z' },
@@ -56,12 +57,11 @@ function handleNavigate(key: string) {
       </NTooltip>
       <NTooltip placement="right" trigger="hover">
         <template #trigger>
-          <RouteLinkItem class="studio-navigation-rail__item studio-navigation-rail__item--relay" :to="{ name: 'hermes.apiRelay' }" :active="activeKey === 'apiRelay'" :aria-label="t('sidebar.apiRelay')" :aria-description="t('apiRelay.campaignLabel')" @click="handleNavigate('apiRelay')">
+          <RouteLinkItem class="studio-navigation-rail__item studio-navigation-rail__item--relay" :to="{ name: 'hermes.apiRelay' }" :active="activeKey === 'apiRelay'" :aria-label="t('sidebar.apiRelay')" @click="handleNavigate('apiRelay')">
             <img class="api-relay-logo" :src="deploymentUrl('/relay-logo.png')" width="24" height="24" alt="" aria-hidden="true" />
-            <RelayCampaignBadge compact />
           </RouteLinkItem>
         </template>
-        {{ t('sidebar.apiRelay') }} · {{ t('apiRelay.campaignLabel') }}
+        {{ t('sidebar.apiRelay') }}
       </NTooltip>
     </nav>
     <div class="studio-navigation-rail__bottom">
