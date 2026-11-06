@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n'
 import PageLoading from '@/components/common/PageLoading.vue'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import ApiRelayUsageCard from '@/components/hermes/ApiRelayUsageCard.vue'
-import RelayCampaignBadge from '@/components/hermes/RelayCampaignBadge.vue'
 import { fetchApiRelayUsage, type ApiRelayAccount } from '@/api/hermes/api-relay'
 
 const { t } = useI18n()
@@ -49,7 +48,6 @@ onBeforeUnmount(() => { requestController?.abort() })
     </PageHeader>
     <div class="api-relay-content">
       <section class="api-relay-hero" data-theme-surface="card" aria-labelledby="api-relay-heading">
-        <span class="api-relay-watermark" aria-hidden="true">11.11</span>
         <img
           class="api-relay-logo"
           :src="deploymentUrl('/relay-logo.png')"
@@ -61,10 +59,9 @@ onBeforeUnmount(() => { requestController?.abort() })
         >
         <div class="api-relay-intro">
           <div class="api-relay-brand">
-            <RelayCampaignBadge />
             <span class="api-relay-wordmark">APIKEY.FAN</span>
           </div>
-          <h3 id="api-relay-heading">{{ t('apiRelay.campaignSlogan') }}</h3>
+          <h3 id="api-relay-heading">{{ t('apiRelay.headline') }}</h3>
           <p>
             <span class="api-relay-service-headline">{{ t('apiRelay.headline') }}</span>
             {{ t('apiRelay.description') }}

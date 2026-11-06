@@ -7,7 +7,6 @@ import { NTooltip } from 'naive-ui'
 import { isStoredSuperAdmin } from '@/api/client'
 import RouteLinkItem from '@/components/common/RouteLinkItem.vue'
 import PageSidebarFooter from './PageSidebarFooter.vue'
-import RelayCampaignBadge from '@/components/hermes/RelayCampaignBadge.vue'
 import { useMobileNavigation } from '@/composables/usePageSidebar'
 
 const route = useRoute()
@@ -56,12 +55,11 @@ function handleNavigate(key: string) {
       </NTooltip>
       <NTooltip placement="right" trigger="hover">
         <template #trigger>
-          <RouteLinkItem class="studio-navigation-rail__item studio-navigation-rail__item--relay" :to="{ name: 'hermes.apiRelay' }" :active="activeKey === 'apiRelay'" :aria-label="t('sidebar.apiRelay')" :aria-description="t('apiRelay.campaignLabel')" @click="handleNavigate('apiRelay')">
+          <RouteLinkItem class="studio-navigation-rail__item studio-navigation-rail__item--relay" :to="{ name: 'hermes.apiRelay' }" :active="activeKey === 'apiRelay'" :aria-label="t('sidebar.apiRelay')" @click="handleNavigate('apiRelay')">
             <img class="api-relay-logo" :src="deploymentUrl('/relay-logo.png')" width="24" height="24" alt="" aria-hidden="true" />
-            <RelayCampaignBadge compact />
           </RouteLinkItem>
         </template>
-        {{ t('sidebar.apiRelay') }} · {{ t('apiRelay.campaignLabel') }}
+        {{ t('sidebar.apiRelay') }}
       </NTooltip>
     </nav>
     <div class="studio-navigation-rail__bottom">
